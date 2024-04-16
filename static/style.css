@@ -3,3 +3,65 @@
     color: white;
     font-family: "Circular Spotify Text";
 }
+
+.section{
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.hero-img{
+    width: 100%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.half-img{
+    width: 100%
+}
+
+.center{
+    text-align: center;
+}
+
+.body-text{
+    font-weight:lighter;
+    font-size: 24px;
+}
+
+.main-question{
+    margin-top: 5%;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.card-title{
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 18px;
+    background-color: revert;
+}
+
+.audio-card{
+    padding-top: 18px;
+    background-color: pink;
+    width: 290px;
+    height: 280px;
+    border-radius: 12px;
+}
+
+.inner-box{
+    clip-path: inset(39% 0 0 42% round 5% 5% 5% 5%);
+    position: absolute;
+    top: 0px;
+    left: 16px;
+    right: 0px;
+    /* bottom: 10px; */
+    width: 290px;
+    height: 280px;
+    rotate: 15deg;
+    background-color: darkviolet;
+}
+
+.scale-down{
+    max-width: 85%;
+}
