@@ -1,7 +1,57 @@
 {% extends 'base.html' %}
 
 {% block information %}
-<h1>Engineering A Top Track</h1>
+<div id="title">
+    <img src="../static/images/title-img.png" class="hero-img"/>
+    <p class="body-text center">By Arthi, Rachel, Abhishek, and Elaine</p>
+</div>
+
+<div class="row section" id="intro">
+ <div class="col-1"></div>
+ <div class="col-5 align-self-center">
+    <div class="body-text">
+        <div>
+            Spotify is the largest platform for music streaming on the internet. 
+            It’s that platform that connects everyone around the globe to the hops 
+            and bops of different cultures.
+        </div>
+        <div style="margin-top: 3%">But have you ever wondered....</div>
+        <div class="main-question">Is there a trend to the hits at the top of the charts? </div>
+        <div class="main-question">Is there perfect audio formula that makes  a top hit?</div>
+    </div>
+ </div>
+ <div class="col-1"></div>
+ <div class="col-4">
+    <img src="../static/images/spotify-img.png" class="half-img"/>
+ </div>
+</div>
+
+<div class="section" id="audio-features-intro">
+    <div class="row" style="margin-bottom: 2%">
+        <div class="col-1"></div>
+        <div class="col-11 body-text">
+            <div>Let's get some background first.</div>
+            <div class="main-question" style="margin-top: 0;">What are the components of audio?</div>
+            <div>Click to explore each category</div>
+        </div>
+    </div>
+    <div class="container-fluid scale-down">
+        <div class="row">
+            <img src="../static/images/audio-cards/dancability.png" class="col-3"/>
+            <img src="../static/images/audio-cards/acousticness.png" class="col-3"/>
+            <img src="../static/images/audio-cards/instrumentalness.png" class="col-3"/>
+            <img src="../static/images/audio-cards/loudness.png" class="col-3"/>
+        </div>
+        <div class="row" style="margin-top: 2%;">
+            <img src="../static/images/audio-cards/valence.png" class="col-3"/>
+            <img src="../static/images/audio-cards/speechiness.png" class="col-3"/>
+            <img src="../static/images/audio-cards/liveness.png" class="col-3"/>
+            <img src="../static/images/audio-cards/energy.png" class="col-3"/>
+        </div>
+    </div>
+    
+</div>
+
 {% endblock %}
 
 {% block exploration %}
