@@ -1,7 +1,10 @@
+/* Arthi's
+*/
 *{
     background-color: #282828;
     color: white;
     font-family: "Circular Spotify Text";
+    border: 1px solid red;
 }
 
 .section{
@@ -65,3 +68,16 @@
 .scale-down{
     max-width: 85%;
 }
+/*  */
+
+/*Abhishek's
+*/
+.data-parent {
+    position: relative;
+}
+
+.data-viz {
+    position: absolute;
+    top: 0;
+}
+/*  */
