@@ -68,8 +68,8 @@ function run_viz() {
                 ENDING_DATE = new Date(STARTING_DATE);
                 ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
                 
-                console.log(parentTop, Math.min(scrollTop, parentBottom - imageHeight), parentBottom);
-                console.log(STARTING_DATE, ENDING_DATE);
+                // console.log(parentTop, Math.min(scrollTop, parentBottom - imageHeight), parentBottom);
+                // console.log(STARTING_DATE, ENDING_DATE);
                 draw_viz(data, STARTING_DATE, ENDING_DATE);
             } else if (scrollTop > parentBottom - imageHeight) {
                 // Pin the image container at the bottom
