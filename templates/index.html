@@ -32,24 +32,13 @@
         <div class="col-11 body-text">
             <div>Let's get some background first.</div>
             <div class="main-question" style="margin-top: 0;">What are the components of audio?</div>
-            <div>Click to explore each category</div>
+            <div id="action-text">Click to explore each category</div>
+            <div id="go-back">< Go Back</div>
         </div>
     </div>
     <div class="container-fluid scale-down">
-        <div class="row">
-            <img src="../static/images/audio-cards/dancability.png" class="col-3"/>
-            <img src="../static/images/audio-cards/acousticness.png" class="col-3"/>
-            <img src="../static/images/audio-cards/instrumentalness.png" class="col-3"/>
-            <img src="../static/images/audio-cards/loudness.png" class="col-3"/>
-        </div>
-        <div class="row" style="margin-top: 2%;">
-            <img src="../static/images/audio-cards/valence.png" class="col-3"/>
-            <img src="../static/images/audio-cards/speechiness.png" class="col-3"/>
-            <img src="../static/images/audio-cards/liveness.png" class="col-3"/>
-            <img src="../static/images/audio-cards/energy.png" class="col-3"/>
-        </div>
+        <div class="grid gap-5" id="feature-grid"></div>
     </div>
-    
 </div>
 
 {% endblock %}

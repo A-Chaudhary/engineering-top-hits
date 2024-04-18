@@ -4,7 +4,7 @@
     background-color: #282828;
     color: white;
     font-family: "Circular Spotify Text";
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 .section{
@@ -37,32 +37,57 @@
     font-size: 40px;
 }
 
+
 .card-title{
-    font-size: 28px;
-    font-weight: bold;
-    margin-left: 18px;
+    font-size: 2.5vw;
+    margin: 1vh 1vw;
+    font-weight: 500;
     background-color: revert;
 }
 
 .audio-card{
-    padding-top: 18px;
-    background-color: pink;
-    width: 290px;
-    height: 280px;
+    width: 100%;
+    height: 25vmin;
+    max-height: 250px;
     border-radius: 12px;
+    position: relative;
+    overflow: hidden;
 }
 
-.inner-box{
-    clip-path: inset(39% 0 0 42% round 5% 5% 5% 5%);
-    position: absolute;
-    top: 0px;
-    left: 16px;
-    right: 0px;
-    /* bottom: 10px; */
-    width: 290px;
-    height: 280px;
+.audio-card.hide{
+    animation: fadeOut;
+    animation-duration: 1s;
+}
+
+.audio-card:hover{
+    filter: brightness(110%) contrast(80%);
+
+    animation: pulse; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 1s; /* don't forget to set a duration! */
+}
+
+.icon-card{
+    width: 10vw;
+    height: 65%;
+    position: relative;
+    top: 15%;
+    left: 17.5vw;
     rotate: 15deg;
-    background-color: darkviolet;
+    border-radius: 8px;
+    background-color: rgb(0,0,0,0.3);
+}
+
+.icon{
+    width: 75%;
+    rotate: -15deg;
+    position: relative;
+    top: 5%;
+    left: 8%;
+    background-color: revert;
+}
+
+.icon:hover{
+    max-width: 90%;
 }
 
 .scale-down{
