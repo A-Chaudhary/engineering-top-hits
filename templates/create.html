@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spinning Circle with Text and Tick</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: #282828;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+        gap: 30px;
+        color: white;
+        align-items: center;
+    }
+
+    .deck {
+        display: flex;
+        flex-direction: row;
+        gap: 60px;
+        border-radius: 14.912px;
+        background: linear-gradient(to bottom, #333333, #999999);
+        box-shadow: 0px 1.491px 17.889px 0px rgba(0, 0, 0, 0.25);
+        padding: 30px;
+    }
+
+    .wrapperSmall {
+        display: flex;
+        flex-direction: row;
+        gap: 42px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 42px;
+    }
+
+    .circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(50% 50% at 50% 50%, #000 0%, #666 100%), black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        border: 24px solid black;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    .circleSmall {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: radial-gradient(50% 50% at 50% 50%, #000 0%, #666 100%), black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        border: 12px solid black;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+        max-width: 240px;
+    }
+
+    .tick {
+        position: absolute;
+        width: 2px;
+        height: 40px;
+        background-color: #fff;
+        top: 0;
+        left: 50%;
+    }
+
+    .tickSmall {
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background-color: #fff;
+        top: 0;
+        left: 50%;
+    }
+
+    .number {
+        display: flex;
+        color: #1ED760;
+        font-family: sans-serif;
+        background: linear-gradient(180deg, #000 0%, #393939 100%), black;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 30px;
+        border-radius: 0.5vw;
+    }
+
+    .circleElement {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    input[type="range"] {
+        /* Rotate the slider vertically */
+        transform: rotate(90deg);
+        -webkit-appearance: none;
+        appearance: none;
+        width: 200px; /* Set the width of the slider */
+        height: 20px; /* Set the height of the slider */
+        margin: 0 auto;
+        background: linear-gradient(0deg, #000 0%, #666 100%);
+        border-radius: 0px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        background-color: linear-gradient(180deg, #000 0%, #666 100%);
+        cursor: pointer;
+        border: none;
+    }
+
+    .button {
+        border-radius: 24px;
+        padding: 18px 18px;
+        color: black;
+        background-color: #1ED760;
+        width: 120px;
+        text-align: center;
+    }
+
+</style>
+</head>
+<body>
+
+<form action="/results" method="post" id = "songForm">
+<div class = "wrapper">
+
+    Engineer a hit song! 
+
+<div class = "deck">
+
+    <div class = "circleElement">
+        <div class = "label">INSTRUMENTALNESS</div>
+        <div class="circle" id="instrumentalness">
+            <div class="tick"></div>
+        </div>
+        <div class = "number" id="instrumentalnessValue">0</div>
+    </div>
+
+    <div class = "column">
+        <div class = "wrapperSmall">
+
+            <div class = "circleElement">
+                <div class = "label">SPEECHINESS</div>
+                <div class="circleSmall" id="speechiness">
+                    <div class="tickSmall"></div>
+                </div>
+                <div class = "number" id="speechinessValue">0</div>
+            </div>
+
+            <div class = "circleElement">
+                <div class = "label">ACOUSTICNESS</div>
+                <div class="circleSmall" id="acousticness">
+                    <div class="tickSmall"></div>
+                </div>
+                <div class = "number" id="acousticnessValue">0</div>
+            </div>
+    </div>
+
+    <div class = "wrapperSmall">
+
+        <div class="circleElement" style = "margin-top: 90px;">
+            <div class = "label" style = "margin-bottom: 90px;">LIVENESS</div>
+            <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+            <div class="number" id="sliderValue" style = "margin-top: 90px;">50</div>
+        </div>
+
+        <div class="circleElement" style = "margin-top: 90px;">
+            <div class = "label" style = "margin-bottom: 90px;">DANCEABILITY</div>
+            <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+            <div class="number" id="sliderValue" style = "margin-top: 90px;">50</div>
+        </div>
+
+    </div>
+
+    </div>
+
+    <div class = "circleElement">
+        <div class = "label">ENERGY</div>
+        <div class="circle" id="energy">
+            <div class="tick"></div>
+        </div>
+        <div class = "number" id="energyValue">0</div>
+    </div>
+
+</div>
+
+<div class = "timeline">
+</div>
+
+<div class = "button" id = "button">
+    <input type = "submit" value = "How'd I do?">
+</div>
+</form>
+
+</div>
+
+<script>
+
+var button = document.getElementById('button');
+    
+    // Add click event listener to the button
+    button.addEventListener('click', function() {
+        // Redirect to the new route
+        window.location.href = '/results';
+    });
+
+// code for circles
+const energy = {
+    element: document.getElementById('energy'),
+    valueElement: document.getElementById('energyValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const speechiness = {
+    element: document.getElementById('speechiness'),
+    valueElement: document.getElementById('speechinessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const acousticness = {
+    element: document.getElementById('acousticness'),
+    valueElement: document.getElementById('acousticnessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const instrumentalness = {
+    element: document.getElementById('instrumentalness'),
+    valueElement: document.getElementById('instrumentalnessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+energy.element.addEventListener('mousedown', (event) => startDrag(event, energy));
+energy.element.addEventListener('touchstart', (event) => startDrag(event, energy));
+
+speechiness.element.addEventListener('mousedown', (event) => startDrag(event, speechiness));
+speechiness.element.addEventListener('touchstart', (event) => startDrag(event, speechiness));
+
+acousticness.element.addEventListener('mousedown', (event) => startDrag(event, acousticness));
+acousticness.element.addEventListener('touchstart', (event) => startDrag(event, acousticness));
+
+instrumentalness.element.addEventListener('mousedown', (event) => startDrag(event, instrumentalness));
+instrumentalness.element.addEventListener('touchstart', (event) => startDrag(event, instrumentalness));
+
+function startDrag(event, circle) {
+    event.preventDefault();
+    circle.dragging = true;
+    circle.startAngle = getAngle(event, circle.element);
+
+    document.addEventListener('mousemove', (event) => drag(event, circle));
+    document.addEventListener('touchmove', (event) => drag(event, circle));
+    document.addEventListener('mouseup', () => stopDrag(circle));
+    document.addEventListener('touchend', () => stopDrag(circle));
+}
+
+function drag(event, circle) {
+    if (!circle.dragging) return;
+    const currentAngle = getAngle(event, circle.element);
+    let angleChange = currentAngle - circle.startAngle;
+    let totalRotation = (circle.currentValue + angleChange / 3) * 3.6;
+    totalRotation = (totalRotation + 360) % 360;
+
+    circle.currentValue = Math.round(totalRotation / 3.6);
+
+    // ensuring it stays within values of 0-100
+    if (circle.currentValue > 100) {
+        circle.currentValue = 0;
+    } else if (circle.currentValue < 0) {
+        circle.currentValue = 100;
+    }
+
+    // update displayed value
+    circle.valueElement.innerText = circle.currentValue;
+
+    // update rotation of circle
+    circle.element.style.transform = `rotate(${totalRotation}deg)`;
+
+    // pdate the start angle for the next drag event
+    circle.startAngle = currentAngle;
+}
+
+function stopDrag(circle) {
+    circle.dragging = false;
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', () => stopDrag(circle));
+    document.removeEventListener('touchmove', drag);
+    document.removeEventListener('touchend', () => stopDrag(circle));
+}
+
+function getAngle(event, element) {
+    const clientX = event.clientX || event.touches[0].clientX;
+    const clientY = event.clientY || event.touches[0].clientY;
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const angle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+    return angle;
+}
+
+// code for sliders
+const slider = document.getElementById("myRange");
+    const output = document.getElementById("sliderValue");
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    };
+
+    slider.addEventListener("input", function() {
+        this.style.setProperty("--value", this.value);
+    }); 
+
+</script>
+</body>
+</html>
