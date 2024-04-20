@@ -52,16 +52,18 @@ def results():
         })
 
         # find closest songs
-        closest_song_indices = find_closest_songs(user_input, df_20s)
+        closest_song_indices = find_closest_songs(user_input, df_10s)
         song_names = []
         popularities = []
         artists = []
+        audios = []
         for idx in closest_song_indices:
             song_names.append(df.loc[idx, "Track Name"])
             popularities.append(df.loc[idx, 'Popularity'])
             artists.append(df.loc[idx, "Artist Name(s)"])
+            audios.append(df.loc[idx, 'Track Preview URL'])
 
-        data = zip(popularities, song_names, artists)
+        data = zip(popularities, song_names, artists, audios)
 
         return render_template('results.html', data = data)
 
