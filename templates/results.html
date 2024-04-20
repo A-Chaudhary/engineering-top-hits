@@ -4,14 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #282828;
+            color: white;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .text {
+            font-size: 24px;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: left;
+            justify-content: left;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .popularity {
+            font-size: 60px;
+            color: rgba(255,255,255,0.75);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            font-weight: bold;
+            justify-content: left;
+        }
+
+
+        .popularity-text {
+            font-size: 12px;
+        }
+
+        .song-artist {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .song {
+            font-size: 24px
+        }
+
+        .artist {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Results</h1>
-    <p>Energy Value: {{ energy }}</p>
-    <p>Speechiness Value: {{ speechiness }}</p>
-    <p>Acousticness Value: {{ acousticness }}</p>
-    <p>Instrumentalness Value: {{ instrumentalness }}</p>
-    <p>Liveness Value: {{ liveness }}</p>
-    <p>Danceability Value: {{ danceability }}</p>
+    <div class = "wrapper">
+
+    <div class = "text">See how your taste in music compares to top hits on the billboard.</div>
+    <div class = "list">
+    {% for popularity, song, artist in data %}
+    <div class = "row">
+        <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
+        <div class = "song-artist">
+            <div class = "song">{{ song }}</div>
+            <div class = "artist">{{ artist }}</div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    </div>
+
 </body>
 </html>
