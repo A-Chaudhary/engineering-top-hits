@@ -24,12 +24,8 @@ df_20s = df[(df['Album Release Date'] >= '2020-01-01') & (df['Album Release Date
 def index():
     return render_template('index.html')
 
-@app.route('/create')
+@app.route('/create', methods=['GET', 'POST'])
 def create():
-    return render_template('create.html')
-
-@app.route('/results', methods=['POST'])
-def results():
     if request.method == 'POST':
         # function to calculate Euclidean distance
         def euclidean_distance(x1, x2):
@@ -52,20 +48,38 @@ def results():
         })
 
         # find closest songs
-        closest_song_indices = find_closest_songs(user_input, df_10s)
+        if request.form["decade"] == "df_60s":
+            df = df_60s
+        elif request.form["decade"] == "df_70s":
+            df = df_70s
+        elif request.form["decade"] == "df_80s":
+            df = df_80s
+        elif request.form["decade"] == "df_90s":
+            df = df_90s
+        elif request.form["decade"] == "df_00s":
+            df = df_00s
+        elif request.form["decade"] == "df_10s":
+            df = df_10s
+        elif request.form["decade"] == "df_20s":
+            df = df_20s
+
+        closest_song_indices = find_closest_songs(user_input, df)
         song_names = []
         popularities = []
         artists = []
         audios = []
+        images = []
         for idx in closest_song_indices:
             song_names.append(df.loc[idx, "Track Name"])
             popularities.append(df.loc[idx, 'Popularity'])
             artists.append(df.loc[idx, "Artist Name(s)"])
             audios.append(df.loc[idx, 'Track Preview URL'])
+            images.append(df.loc[idx, 'Album Image URL'])
 
-        data = zip(popularities, song_names, artists, audios)
+        data = zip(popularities, song_names, artists, audios, images)
 
-        return render_template('results.html', data = data)
+        return render_template('create.html', data = data, df = request.form["decade"])
+    return render_template('create.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

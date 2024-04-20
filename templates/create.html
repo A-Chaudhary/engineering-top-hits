@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spinning Circle with Text and Tick</title>
 <style>
+    @font-face {
+    font-family: 'Circular'; /* Name your custom font */
+    src: url('../static/CircularSpotifyTxT-Book.ttf') format('truetype'); /* Specify the path to your .ttf file */
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'Circular'; /* Name your custom font */
+    src: url('../static/CircularSpotifyTxT-Medium.ttf') format('truetype'); /* Specify the path to your .ttf file */
+    font-weight: bold;
+    font-style: normal;
+    }
 
     body {
         display: flex;
@@ -12,7 +25,7 @@
         align-items: center;
         margin: 0;
         overflow: scroll;
-        font-family: Arial, sans-serif;
+        font-family: "Circular", sans-serif;
         background-color: #282828;
     }
 
@@ -31,7 +44,7 @@
         display: flex;
         flex-direction: column;
         padding: 30px;
-        gap: 30px;
+        gap: 60px;
         color: white;
         align-items: center;
     }
@@ -174,7 +187,150 @@
         align-items: center;
         justify-content: center;
     }
-   
+
+    .timeline {
+        display: none;
+    }
+
+    .line {
+        background-color: white;
+        width: 1000px;
+        height: 2px;
+    }
+
+    .dots {
+        z-index: 1000;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 10px;
+        position: relative;
+        bottom: 6px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        background-color: white;
+    }
+
+    .dot-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dot-wrap.active .dot {
+        background-color: #1ED760;
+    }
+
+    .dot-wrap.active {
+        color: #1ED760;
+    }
+
+    .results-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+    }
+
+    .text {
+        font-size: 24px;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .popularity {
+        font-size: 90px;
+        color: rgba(255,255,255,0.75);
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        justify-content: left;
+        width: 100px;
+    }
+
+
+    .popularity-text {
+        font-size: 12px;
+        position: relative;
+        bottom: 20px;
+    }
+
+    .embed {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 12px;
+        align-items: center;
+        justify-content: left;
+        width: 300px;
+        overflow: wrap;
+    }
+
+    .play {
+        margin-left: auto; 
+        margin-top: auto;
+    }
+
+    img {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+    }
+
+    .song-artist {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .song {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .artist {
+        font-size: 12px;
+        color: rgba(255,255,255,0.5);
+    }
+    
+    .preview {
+        display: none;
+    }
+
+    audio {
+        opacity: 90%;
+        box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
+        border-radius: 100px;
+        border: solid rgba(0,0,0,0.5) 6px;
+    }
+    
+    .gap {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
 
 </style>
 </head>
@@ -249,21 +405,128 @@
 
 
 <!-- hidden input fields to store values -->
-<form action="/results" method="post" onsubmit="return updateHiddenInputs()">
+<form id = "form" action="/create" method="post" onsubmit="return updateHiddenInputs()">
     <input type="hidden" id="instrumentalnessInput" name="instrumentalness">
     <input type="hidden" id="speechinessInput" name="speechiness">
     <input type="hidden" id="acousticnessInput" name="acousticness">
     <input type="hidden" id="livenessInput" name="liveness">
     <input type="hidden" id="danceabilityInput" name="danceability">
     <input type="hidden" id="energyInput" name="energy">
-    <div class = "button" id = "button">
-        <input type = "submit" value = "Show similar songs">
+    <input type="hidden" name="decade" id="decadeInput">
+    <div class = "button">
+        <input type = "submit" id = "button" value = "Show similar songs">
     </div>
 </form>
 
+<div class = "gap"></div>
+
+<!-- hidden results -->
+<div class = "results-wrapper">
+
+    <div class="timeline" id="timeline" {% if data %}style="display: block;"{% endif %}>
+        <div class = "line"></div>
+        <div class = "dots">
+            <div class = "dot-wrap {% if df == 'df_60s' %}active{% endif %}" id = "df_60s">
+                <div class = "dot"></div>
+                1960s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_70s' %}active{% endif %}" id = "df_70s">
+                <div class = "dot"></div>
+                1970s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_80s' %}active{% endif %}" id = "df_80s">
+                <div class = "dot"></div>
+                1980s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_90s' %}active{% endif %}" id = "df_90s">
+                <div class = "dot"></div>
+                1990s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_00s' %}active{% endif %}" id = "df_00s">
+                <div class = "dot"></div>
+                2000s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_10s' %}active{% endif %}" id = "df_10s">
+                <div class = "dot"></div>
+                2010s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_20s' %}active{% endif %}" id = "df_20s">
+                <div class = "dot"></div>
+                2020s
+            </div>
+        </div>
+    </div>
+    
+
+    <div class = "list">
+    {% for popularity, song, artist, audio, image in data %}
+    <div class = "row">
+        <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
+        <div class = "embed">
+        <div class = "image"><img src = "{{ image }}"></div>
+        <div class = "song-artist">
+            <div class = "song">{{ song }}</div>
+            <div class = "artist">{{ artist }}</div>
+            <div class = "preview">
+                <audio controls id="audio{{ loop.index }}">
+                    <source src={{audio}} type="audio/mpeg">
+                  </audio>
+                  <!-- consider adding custom button using js to play audio preview -->
+            </div>
+        </div>
+        <div class="play" onclick="togglePlayPause('{{ loop.index }}')">
+            <img id="playPause{{ loop.index }}" src="../static/Play.png" style = "height: 30px;width:30px;">
+        </div>        
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    </div>
 </div>
 
+
 <script>
+
+window.addEventListener('load', restoreScrollPosition);
+
+function togglePlayPause(index) {
+    var audio = document.getElementById('audio' + index);
+    var playPauseImg = document.getElementById('playPause' + index);
+
+    if (audio.paused) {
+        audio.play();
+        playPauseImg.src = "../static/Pause.png";
+    } else {
+        audio.pause();
+        playPauseImg.src = "../static/Play.png";
+    }
+}
+
+
+
+// code for timeline
+const dotWraps = document.querySelectorAll('.dot-wrap');
+
+dotWraps.forEach(dotWrap => {
+  dotWrap.addEventListener('click', function() {
+    dotWraps.forEach(element => {
+      element.classList.remove('active');
+    });
+    
+    this.classList.add('active');
+    const decadeId = this.id;
+    document.getElementById("instrumentalnessInput").value = document.getElementById("instrumentalnessValue").textContent;
+    document.getElementById("speechinessInput").value = document.getElementById("speechinessValue").textContent;
+    document.getElementById("acousticnessInput").value = document.getElementById("acousticnessValue").textContent;
+    document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
+    document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
+    document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
+    document.getElementById('decadeInput').value = decadeId;
+    storeScrollPosition();
+    document.getElementById('form').submit();
+  });
+});
+
 
 // code for circles
 const energy = {
@@ -330,20 +593,14 @@ function drag(event, circle) {
 
     circle.currentValue = Math.round(totalRotation / 3.6);
 
-    // ensuring it stays within values of 0-100
     if (circle.currentValue > 100) {
         circle.currentValue = 0;
     } else if (circle.currentValue < 0) {
         circle.currentValue = 100;
     }
 
-    // update displayed value
     circle.valueElement.innerText = circle.currentValue;
-
-    // update rotation of circle
     circle.element.style.transform = `rotate(${totalRotation}deg)`;
-
-    // pdate the start angle for the next drag event
     circle.startAngle = currentAngle;
 }
 
@@ -396,11 +653,25 @@ function updateHiddenInputs() {
     document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
     document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
     document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
+    document.getElementById('decadeInput').value = "df_60s"; // default
 }
 
 document.getElementById("button").addEventListener("click", function() {
     updateHiddenInputs();
 });
+
+function storeScrollPosition() {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+}
+
+// Function to restore the scroll position
+function restoreScrollPosition() {
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        sessionStorage.removeItem('scrollPosition');
+    }
+}
 
 </script>
 </body>
