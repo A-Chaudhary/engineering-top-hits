@@ -39,13 +39,33 @@ def create():
 
         # user input
         user_input = pd.Series({
-            "Instrumentalness": int(request.form['instrumentalness'])*100,
-            "Speechiness": int(request.form['speechiness'])*100,
-            "Acousticness": int(request.form['acousticness'])*100,
-            "Liveness": int(request.form['liveness'])*100,
-            "Danceability": int(request.form['danceability'])*100,
-            "Energy": int(request.form['energy'])*100
+            "Instrumentalness": int(request.form['instrumentalness'])/100,
+            "Speechiness": int(request.form['speechiness'])/100,
+            "Acousticness": int(request.form['acousticness'])/100,
+            "Liveness": int(request.form['liveness'])/100,
+            "Danceability": int(request.form['danceability'])/100,
+            "Energy": int(request.form['energy'])/100
         })
+
+        # def find_closest_songs(user_input, dataset, num_songs=5):
+        #     user_attributes = user_input.index.tolist()
+        #     closest_songs = []
+        #     threshold = 0.1
+            
+        #     while len(closest_songs) < num_songs:
+        #         for index, row in dataset.iterrows():
+        #             diffs = abs(row[user_attributes] - user_input[user_attributes])
+                
+        #             if (diffs <= threshold).all():
+        #                 closest_songs.append(index)
+                        
+        #                 if len(closest_songs) >= num_songs:
+        #                     break
+                
+        #         if len(closest_songs) < num_songs:
+        #             threshold += 0.1
+            
+        #     return closest_songs[:num_songs]
 
         # find closest songs
         if request.form["decade"] == "df_60s":
