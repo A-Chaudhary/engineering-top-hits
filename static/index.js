@@ -47,6 +47,7 @@ $(document).ready(function () {
 $("#go-back").click(function () {
     $("#action-text").show()
     $("#go-back").hide()
+    $("#audio-info").hide()
     $('#feature-grid .audio-card').show();
     $('#feature-grid .audio-card').removeClass("audio-card-transition").removeClass("long-feature-card");
     $(".feature-description").hide();
@@ -82,6 +83,7 @@ function loadAudioFeatureGrid() {
             }
 
             $(this).find(".feature-description").show();
+            $('#audio-info').show()
         })
 
         $('#feature-grid').append(card)
