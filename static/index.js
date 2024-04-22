@@ -5,7 +5,7 @@ let audioFeatures= [
         image: "static/images/audio-cards/acoustic.png"
     },
     {
-        name: "Dancability",
+        name: "Danceability",
         color: "#F573A0",
         image: "static/images/audio-cards/dance.png"
     },
