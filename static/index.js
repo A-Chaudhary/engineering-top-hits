@@ -1,72 +1,8 @@
-let audioFeatures= [
-    {
-        name: "Acousticness",
-        color: "#509BF5",
-        description: "A confidence measure from 0.0 to 1.0 of whether the track is acoustic. Think of accousticness as the absence of drums or a clear bass line.",
-        image: "static/images/audio-cards/acoustic.png",
-        zeroText: "0 = Low Acousticness",
-        oneText: "1 = High Acousticness",
-        zeroAudio: "https://open.spotify.com/embed/track/1LYNuVLtV374Iy7vlHy6BO?utm_source=generator=theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/30Co9eN7JHPf1i2wEyVSMJ?utm_source=generator&theme=0"
-    },
-    {
-        name: "Danceability",
-        color: "#F573A0",
-        description: "How suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. ",
-        image: "static/images/audio-cards/dance.png",
-        zeroText: "0 = Low Dancability",
-        oneText: "1 = High Dancability",
-        zeroAudio: "https://open.spotify.com/embed/track/7JURn7T7Tq3wszT0aEieBM?utm_source=generator&theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/3sy0rren2cVFNfkDxa0q2e?utm_source=generator&theme=0"
-    },
-    {
-        name: "Energy",
-        color: "#FF4632",
-        description: "Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.",
-        image: "static/images/audio-cards/energy.png",
-        zeroText: "0 = Low Energy",
-        oneText: "1 = High Energy",
-        zeroAudio: "https://open.spotify.com/embed/track/6gGboAhqHBqs5szVLobC41?utm_source=generator&theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/3Uo9Bpx6eoh3riOwNY3tyS?utm_source=generator&theme=0"
-    },
-    {
-        name: "Instrumentalness",
-        color: "#FFC564",
-        description: "Predicts whether a track contains no vocals. 'Ooh' and 'aah' sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly 'vocal'.",
-        image: "static/images/audio-cards/instrumental.png",
-        zeroText: "0 = No Instrumentals (Mostly Lyrics)",
-        oneText: "1 = High Instrumentals (NO Lyrics)",
-        zeroAudio: "https://open.spotify.com/embed/track/2qxmye6gAegTMjLKEBoR3d?utm_source=generator&theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/6Sy9BUbgFse0n0LPA5lwy5?utm_source=generator&theme=0"
-    },
-    {
-        name: "Liveness",
-        color: "#6E4E73",
-        description: "Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.",
-        image: "static/images/audio-cards/live.png",
-        zeroText: "0 = Pre-Recorded",
-        oneText: "1 = Performed & Recorded Live",
-        zeroAudio: "https://open.spotify.com/embed/track/3yrvQHw6pQemsrCQEpMnKv?utm_source=generator&theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/3k3QGyFyA5qrT5BLqeU1Ss?utm_source=generator&theme=0"
-    },
-    {
-        name: "Speechiness",
-        color: "#1ED760",
-        description: "Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.",
-        image: "static/images/audio-cards/speech.png",
-        zeroText: "0 = All Vocal/Lyrics",
-        oneText: "1 = All Spoken Words",
-        zeroAudio: "https://open.spotify.com/embed/track/63kd4m3VFxcJjPVVtbVNAu?utm_source=generator&theme=0",
-        oneAudio: "https://open.spotify.com/embed/track/08SAg9qnUdWVQV2Jbj7cu8?utm_source=generator&theme=0"
-    }
-]
-
 
 $(document).ready(function () {
     $("#audio-info").hide()
     $("#go-back").hide()
-
-    loadAudioFeatureGrid()
+    loadData()
 });
 
 $("#go-back").click(function () {
@@ -79,7 +15,22 @@ $("#go-back").click(function () {
     $(".icon-card").show();
 })
 
-function loadAudioFeatureGrid() {
+function loadData() {
+    fetch("static/audio_features.json")
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error
+                    (`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then((data) => {  loadAudioFeatureGrid(data) })
+        .catch((error) => 
+                console.error("Unable to fetch data:", error));
+}
+
+function loadAudioFeatureGrid(audioFeatures) {
+    console.log(audioFeatures)
     $.each(audioFeatures, function (index, value) {
         let card = $(`<div class='audio-card p-2 g-col-4' id=${value.name}>`)
         let title = $("<div class='card-title'>").html(value.name)
