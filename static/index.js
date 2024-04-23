@@ -6,6 +6,7 @@ $(document).ready(function () {
 });
 
 $("#go-back").click(function () {
+    $("#audio-info").empty();
     $("#action-text").show()
     $("#go-back").hide()
     $("#audio-info").hide()
@@ -68,7 +69,6 @@ function loadAudioFeatureGrid(audioFeatures) {
 }
 
 function loadAudioInfo(info) {
-    $("#audio-info").empty();
     let card = $(`<div class='long-feature-card' style="margin-top: 2%;">`)
     let leftSection = $(`<div style="text-align: left">`)
     let rightSection = $(`<div style="text-align: right">`)
