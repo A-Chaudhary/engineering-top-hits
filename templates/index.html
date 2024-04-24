@@ -1,13 +1,70 @@
 {% extends 'base.html' %}
 
 {% block information %}
-<h1>Engineering A Top Track</h1>
+<div id="title" class="section" style="margin-top: 0px;">
+    <img src="../static/images/title-img.png" class="hero-img"/>
+    <p class="body-text center">By Arthi, Rachel, Abhishek, and Elaine</p>
+</div>
+
+<div class="row section" id="intro">
+ <div class="col-1"></div>
+ <div class="col-5 align-self-center">
+    <div class="body-text">
+        <div>
+            Spotify is the largest platform for music streaming on the internet. 
+            It's that platform that connects everyone around the globe to the hops 
+            and bops of different cultures.
+        </div>
+        <div style="margin-top: 3%">But have you ever wondered....</div>
+        <div class="main-question">Is there a trend to the hits at the top of the charts? </div>
+        <div class="main-question">Is there perfect audio formula that makes  a top hit?</div>
+    </div>
+ </div>
+ <div class="col-1"></div>
+ <div class="col-4">
+    <img src="../static/images/spotify-img.png" class="half-img"/>
+ </div>
+</div>
+
+<div class="section" id="audio-features-intro">
+    <div class="row" style="margin-bottom: 2%">
+        <div class="col-1"></div>
+        <div class="col-11 body-text">
+            <div>Let's get some background first.</div>
+            <div class="main-question" style="margin-top: 0;">What are the components of audio?</div>
+            <div id="action-text">Click to explore each category</div>
+            <div id="go-back">< Go Back</div>
+        </div>
+    </div>
+    <div class="container-fluid scale-down">
+        <div class="grid gap-5" id="feature-grid"></div>
+    </div>
+    <div id="audio-info" class="container-fluid scale-down">
+        <!-- <div><img src="../static/images/wave.gif" class="wave"/></div> -->
+        <!-- <div class="long-feature-card" style="margin-top: 2%;">
+            <div style="text-align: left">
+                <div class="audio-scale-text">0 = Low Dancability</div>
+                <iframe class="audio-embed" src="https://open.spotify.com/embed/track/7JURn7T7Tq3wszT0aEieBM?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+            <div style="text-align: right">
+                <div class="audio-scale-text">1 = High Dancability</div>
+                <iframe class="audio-embed" src="https://open.spotify.com/embed/track/3sy0rren2cVFNfkDxa0q2e?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div> -->
+    </div>
+</div>
+
 {% endblock %}
 
 {% block exploration %}
 <h1>Decade Exploration</h1>
+<div class="data-parent" style="height:1000vh">
+    <div id="data-viz"></div>
+</div>
+
 {% endblock %}
 
 {% block interactive %}
 <h1>Interactive</h1>
+<div class="" style="height:200vh"></div>
 {% endblock %}
