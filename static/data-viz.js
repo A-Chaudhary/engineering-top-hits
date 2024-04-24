@@ -1,37 +1,22 @@
 
-const RANKCUTOFF = 50;
+const RANKCUTOFF = 10;
 const BEGIN_DATE = new Date("1960-01-01");
 const END_DATE = new Date("2015-12-31");
 
 
 function run_viz() {
-    d3.csv('../static/charts.csv').then(function(master_data) {
+    d3.csv('../static/average+stv_month.csv').then(function(master_data) {
         var data = master_data;
         for (var d_idx in data) {
-            data[d_idx].date = new Date(data[d_idx].date);
+            data[d_idx].date = new Date(`${data[d_idx].Year}-${data[d_idx].Month}-1`);
         }
 
         var STARTING_DATE = new Date('1960-01-01');
         var ENDING_DATE = new Date(STARTING_DATE);
         ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
     
-        data = data.filter(d => d.rank <= RANKCUTOFF);
-        data.sort((a, b) => {
-            // Convert both artists to lowercase to ensure case-insensitive sorting
-            var artistA = a.artist.toLowerCase();
-            var artistB = b.artist.toLowerCase();
-          
-            // Compare the artist names
-            if (artistA < artistB) {
-              return -1;
-            }
-            if (artistA > artistB) {
-              return 1;
-            }
-            return 0; // If names are equal
-          });
-        // console.log(data, typeof data)
-
+        // Extract the features you want to visualize
+    const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
 
 
         $(document).ready(function() {
@@ -55,7 +40,7 @@ function run_viz() {
             $(window).on('scroll', function() {
                 var scrollTop = $(this).scrollTop();
               // Check if parent div is in the view
-              if (scrollTop >= parentTop && scrollTop <= parentBottom - imageHeight) {
+              if (scrollTop >= parentTop + imageHeight && scrollTop <= parentBottom) {
                 // Pin the image container
                 $imageContainer.css({
                   position: 'fixed',
@@ -96,43 +81,20 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
     data = data.filter(d => d.date >= STARTING_DATE && d.date <= ENDING_DATE);
     // console.log(data);
-    
-    var artist_song_df = d3.group(data, d => d.artist, d => d.song);
-    artist_song_df.forEach((value, key, map) => {
-        value.forEach(song => {
-            song.sort((a, b) => a.date - b.date);
-        });
-    });
-    // console.log(artist_song_df);
 
-    // Initialize an array to store the maps
-    var mapsList = [];
+    const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
 
-    // Iterate over the entries of the internmap
-    for (const [artist, songsMap] of artist_song_df.entries()) {
-        for (const [song, data] of songsMap.entries()) {
-            // Create a map for each entry with keys for artists, songs, and data
-            var map = new Map();
-            map.set('artist', artist);
-            map.set('song', song);
-            map.set('data', data);
-            // Push the map to the array
-            mapsList.push(map);
-        }
+    const feature_colors = {
+        "Danceability_mean": "#F573A0", 
+        "Energy_mean": "#FF4632", 
+        "Speechiness_mean": "#1ED760", 
+        "Acousticness_mean": "#509BF5", 
+        "Instrumentalness_mean": "#FFC564", 
+        "Liveness_mean": "#6E4E73"
     }
 
-    // Output the list of maps
-    // console.log(mapsList);
-    mapsList.sort((a, b) => {
-        const dataA = a.get('data');
-        const dataB = b.get('data');
-        return dataB.length - dataA.length; // Sort in descending order
-    });
-
-    // console.log(mapsList);
-
     // const width = 840;
-    const width = $(window).width();
+    const width = parseInt($(window).width() * (0.6));
     const height = 400;
     const marginTop = 20;
     const marginRight = 20;
@@ -146,7 +108,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
     // Declare the y (vertical position) scale.
     const y = d3.scaleLinear()
-        .domain([RANKCUTOFF, 1])
+        .domain([0, 1])
         .range([height - marginBottom, marginTop]);
 
     // Define a color scale
@@ -159,43 +121,20 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
         .attr("width", width)
         .attr("height", height);
 
-    // Add a line for each song
-
-    for (let i = 0; i < mapsList.length; i++) {
-        const map = mapsList[i];
-        const artist = map.get('artist');
-        const song = map.get('song');
-        const data = map.get('data');
-
-        // console.log(data[data.length - 1]);
-    
-        var time_1959_to_1977 = (data[data.length - 1]['weeks-on-board'] > 12 && data.filter(d => d.rank <= 10).length > 9) 
-            && (data[0]['date'] > new Date('1959-01-01') && data[0]['date'] <= new Date('1977-01-01'));
-        var time_1977_to_1984 = (data[data.length - 1]['weeks-on-board'] > 12 && data.filter(d => d.rank <= 10).length > 13) 
-            && (data[0]['date'] > new Date('1977-01-01') && data[0]['date'] <= new Date('1984-01-01'));
-        var time_1984_to_1991 = (data[data.length - 1]['weeks-on-board'] > 8 && data.filter(d => d.rank <= 10).length > 8) 
-            && (data[0]['date'] > new Date('1984-01-01') && data[0]['date'] <= new Date('1991-01-01'));
-        var time_1991_to_2010 = (data[data.length - 1]['weeks-on-board'] > 12 && data.filter(d => d.rank <= 10).length > 20) 
-            && (data[0]['date'] < new Date('2010-01-01') && data[0]['date'] > new Date('1991-01-01'));
-        var time_2010_to_2022 = (data[data.length - 1]['weeks-on-board'] > 12 && data.filter(d => d.rank <= 10).length > 25 && data[data.length - 1]['peak-rank'] == 1) 
-            && (data[0]['date'] >= new Date('2010-01-01') && data[0]['date'] < new Date('2022-01-01'));
-        if (time_1959_to_1977 | time_1977_to_1984 || time_1984_to_1991 || time_1991_to_2010 || time_2010_to_2022
-            ) {
+    // Loop through each feature and draw a line for it
+    features.forEach(feature => {
         const line = d3.line()
-            .x(d=>x(d.date))
-            .y(d=>y(d.rank))
-            .curve(d3.curveMonotoneX);
+            .x(d => x(d.date))
+            .y(d => y(d[feature]));
 
-        svg.append('path')
+        svg.append("path")
             .datum(data)
             .attr("fill", "none")
-            .attr("stroke", colorScale(data[0].date))
+            .attr("stroke", feature_colors[feature])
             .attr("stroke-width", 2)
             .attr("d", line);
-        
-        }
-    }
-    
+    });
+
     // Add the x-axis.
     svg.append("g")
         .attr("transform", `translate(0,${height - marginBottom})`)
