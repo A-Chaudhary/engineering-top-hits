@@ -61,10 +61,153 @@
 <div class="data-parent" style="height:1000vh">
     <div id="data-viz"></div>
 </div>
-
 {% endblock %}
 
 {% block interactive %}
-<h1>Interactive</h1>
-<div class="" style="height:200vh"></div>
+<div class="body">
+    <div class = "wrapper">
+        <div class = "text-wrapper">
+            <div class = "text">Engineer a song!</div>
+            <div class = "subtext">See how your taste in music compares to top hits on the billboard.</div>
+        </div>
+    
+    <div class = "deck">
+    
+        <div class = "circleElement">
+            <div class = "label">INSTRUMENTALNESS</div>
+            <div class="circle" id="instrumentalness">
+                <div class="tick"></div>
+            </div>
+            <div class = "number" id="instrumentalnessValue">0</div>
+        </div>
+    
+        <div class = "column">
+            <div class = "wrapperSmall">
+    
+                <div class = "circleElement">
+                    <div class = "label">SPEECHINESS</div>
+                    <div class="circleSmall" id="speechiness">
+                        <div class="tickSmall"></div>
+                    </div>
+                    <div class = "number" id="speechinessValue">0</div>
+                </div>
+    
+                <div class = "circleElement">
+                    <div class = "label">ACOUSTICNESS</div>
+                    <div class="circleSmall" id="acousticness">
+                        <div class="tickSmall"></div>
+                    </div>
+                    <div class = "number" id="acousticnessValue">0</div>
+                </div>
+        </div>
+    
+        <div class = "wrapperSmall">
+    
+            <div class="circleElement" style = "margin-top: 90px;">
+                <div class = "label" style = "margin-bottom: 90px;">LIVENESS</div>
+                <input type="range" min="0" max="100" value="50" class="slider" id="liveness">
+                <div class="number" id="livenessValue" style = "margin-top: 90px;">50</div>
+            </div>
+    
+            <div class="circleElement" style = "margin-top: 90px;">
+                <div class = "label" style = "margin-bottom: 90px;">DANCEABILITY</div>
+                <input type="range" min="0" max="100" value="50" class="slider" id="danceability">
+                <div class="number" id="danceabilityValue" style = "margin-top: 90px;">50</div>
+            </div>
+    
+        </div>
+    
+        </div>
+    
+        <div class = "circleElement">
+            <div class = "label">ENERGY</div>
+            <div class="circle" id="energy">
+                <div class="tick"></div>
+            </div>
+            <div class = "number" id="energyValue">0</div>
+        </div>
+    
+    </div>
+    
+    <!-- hidden input fields to store values -->
+    <form id = "form" action="/create" method="post" onsubmit="return updateHiddenInputs()">
+        <input type="hidden" id="instrumentalnessInput" name="instrumentalness">
+        <input type="hidden" id="speechinessInput" name="speechiness">
+        <input type="hidden" id="acousticnessInput" name="acousticness">
+        <input type="hidden" id="livenessInput" name="liveness">
+        <input type="hidden" id="danceabilityInput" name="danceability">
+        <input type="hidden" id="energyInput" name="energy">
+        <input type="hidden" name="decade" id="decadeInput">
+        <div class = "button">
+            <input type = "submit" id = "button" value = "Show similar songs">
+        </div>
+    </form>
+    
+    <div class = "gap"></div>
+    
+    <!-- hidden results -->
+    <div class = "results-wrapper">
+    
+        <div class="timeline" id="timeline" {% if data %}style="display: block;"{% endif %}>
+            <div class = "line"></div>
+            <div class = "dots">
+                <div class = "dot-wrap {% if df == 'df_60s' %}active{% endif %}" id = "df_60s">
+                    <div class = "dot"></div>
+                    1960s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_70s' %}active{% endif %}" id = "df_70s">
+                    <div class = "dot"></div>
+                    1970s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_80s' %}active{% endif %}" id = "df_80s">
+                    <div class = "dot"></div>
+                    1980s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_90s' %}active{% endif %}" id = "df_90s">
+                    <div class = "dot"></div>
+                    1990s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_00s' %}active{% endif %}" id = "df_00s">
+                    <div class = "dot"></div>
+                    2000s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_10s' %}active{% endif %}" id = "df_10s">
+                    <div class = "dot"></div>
+                    2010s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_20s' %}active{% endif %}" id = "df_20s">
+                    <div class = "dot"></div>
+                    2020s
+                </div>
+            </div>
+        </div>
+        
+    
+        <div class = "list">
+        {% for popularity, song, artist, audio, image in data %}
+        <div class = "row">
+            <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
+            <div class = "embed">
+            <div class = "image"><img src = "{{ image }}"></div>
+            <div class = "song-artist">
+                <div class = "song">{{ song }}</div>
+                <div class = "artist">{{ artist }}</div>
+                <div class = "preview">
+                    <audio controls id="audio{{ loop.index }}">
+                        <source src={{audio}} type="audio/mpeg">
+                      </audio>
+                      <!-- consider adding custom button using js to play audio preview -->
+                </div>
+            </div>
+            <div class="play" onclick="togglePlayPause('{{ loop.index }}')">
+                <img id="playPause{{ loop.index }}" src="../static/Play.png" style = "height: 30px;width:30px;">
+            </div>        
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
