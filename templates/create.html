@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineer a song!</title>
+<style>
+    @font-face {
+    font-family: 'Circular'; 
+    src: url('../static/CircularSpotifyTxT-Book.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'Circular'; 
+    src: url('../static/CircularSpotifyTxT-Medium.ttf') format('truetype'); 
+    font-weight: bold;
+    font-style: normal;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        overflow: scroll;
+        font-family: "Circular", sans-serif;
+        background-color: #282828;
+    }
+
+    input {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        outline: none;
+}
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+        gap: 60px;
+        color: white;
+        align-items: center;
+    }
+
+    .deck {
+        display: flex;
+        flex-direction: row;
+        gap: 60px;
+        border-radius: 14.912px;
+        background: linear-gradient(to bottom, #333333, #999999);
+        box-shadow: 0px 1.491px 17.889px 0px rgba(0, 0, 0, 0.25);
+        padding: 30px;
+    }
+
+    .wrapperSmall {
+        display: flex;
+        flex-direction: row;
+        gap: 42px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 42px;
+    }
+
+    .circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(50% 50% at 50% 50%, #000 0%, #666 100%), black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        border: 24px solid black;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    .circleSmall {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: radial-gradient(50% 50% at 50% 50%, #000 0%, #666 100%), black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        border: 12px solid black;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+        max-width: 240px;
+    }
+
+    .tick {
+        position: absolute;
+        width: 2px;
+        height: 40px;
+        background-color: #fff;
+        top: 0;
+        left: 50%;
+    }
+
+    .tickSmall {
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background-color: #fff;
+        top: 0;
+        left: 50%;
+    }
+
+    .number {
+        display: flex;
+        color: #1ED760;
+        font-family: sans-serif;
+        background: linear-gradient(180deg, #000 0%, #393939 100%), black;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 30px;
+        border-radius: 0.5vw;
+    }
+
+    .circleElement {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    input[type="range"] {
+        transform: rotate(90deg);
+        -webkit-appearance: none;
+        appearance: none;
+        width: 200px; 
+        height: 20px;
+        margin: 0 auto;
+        background: linear-gradient(0deg, #000 0%, #666 100%);
+        border-radius: 0px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        background-color: linear-gradient(180deg, #000 0%, #666 100%);
+        cursor: pointer;
+        border: none;
+    }
+
+    .button {
+        border-radius: 32px;
+        padding: 18px 18px;
+        color: black;
+        background-color: #1ED760;
+        width: 140px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text {
+        font-size: 24px;
+    }
+
+    .subtext {
+        font-size: 18px;
+        color: rgba(255,255,255,0.5);
+    }
+
+    .text-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timeline {
+        display: none;
+    }
+
+    .line {
+        background-color: white;
+        width: 1000px;
+        height: 2px;
+    }
+
+    .dots {
+        z-index: 1000;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 10px;
+        position: relative;
+        bottom: 6px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        background-color: white;
+    }
+
+    .dot-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dot-wrap.active .dot {
+        background-color: #1ED760;
+    }
+
+    .dot-wrap.active {
+        color: #1ED760;
+    }
+
+    .results-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+    }
+
+    .text {
+        font-size: 24px;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        gap: 36px;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .popularity {
+        font-size: 90px;
+        color: rgba(255,255,255,0.75);
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        justify-content: left;
+        width: 100px;
+    }
+
+
+    .popularity-text {
+        font-size: 12px;
+        position: relative;
+        bottom: 20px;
+    }
+
+    .embed {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 12px;
+        align-items: center;
+        justify-content: left;
+        width: 300px;
+        overflow: wrap;
+    }
+
+    .play {
+        margin-left: auto; 
+        margin-top: auto;
+    }
+
+    img {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+    }
+
+    .song-artist {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .song {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .artist {
+        font-size: 12px;
+        color: rgba(255,255,255,0.5);
+    }
+    
+    .preview {
+        display: none;
+    }
+
+    audio {
+        opacity: 90%;
+        box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
+        border-radius: 100px;
+        border: solid rgba(0,0,0,0.5) 6px;
+    }
+    
+    .gap {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+
+</style>
+</head>
+<body>
+
+
+<div class = "wrapper">
+
+
+    <div class = "text-wrapper">
+        <div class = "text">Engineer a song!</div>
+        <div class = "subtext">See how your taste in music compares to top hits on the billboard.</div>
+    </div>
+
+<div class = "deck">
+
+    <div class = "circleElement">
+        <div class = "label">INSTRUMENTALNESS</div>
+        <div class="circle" id="instrumentalness">
+            <div class="tick"></div>
+        </div>
+        <div class = "number" id="instrumentalnessValue">0</div>
+    </div>
+
+    <div class = "column">
+        <div class = "wrapperSmall">
+
+            <div class = "circleElement">
+                <div class = "label">SPEECHINESS</div>
+                <div class="circleSmall" id="speechiness">
+                    <div class="tickSmall"></div>
+                </div>
+                <div class = "number" id="speechinessValue">0</div>
+            </div>
+
+            <div class = "circleElement">
+                <div class = "label">ACOUSTICNESS</div>
+                <div class="circleSmall" id="acousticness">
+                    <div class="tickSmall"></div>
+                </div>
+                <div class = "number" id="acousticnessValue">0</div>
+            </div>
+    </div>
+
+    <div class = "wrapperSmall">
+
+        <div class="circleElement" style = "margin-top: 90px;">
+            <div class = "label" style = "margin-bottom: 90px;">LIVENESS</div>
+            <input type="range" min="0" max="100" value="50" class="slider" id="liveness">
+            <div class="number" id="livenessValue" style = "margin-top: 90px;">50</div>
+        </div>
+
+        <div class="circleElement" style = "margin-top: 90px;">
+            <div class = "label" style = "margin-bottom: 90px;">DANCEABILITY</div>
+            <input type="range" min="0" max="100" value="50" class="slider" id="danceability">
+            <div class="number" id="danceabilityValue" style = "margin-top: 90px;">50</div>
+        </div>
+
+    </div>
+
+    </div>
+
+    <div class = "circleElement">
+        <div class = "label">ENERGY</div>
+        <div class="circle" id="energy">
+            <div class="tick"></div>
+        </div>
+        <div class = "number" id="energyValue">0</div>
+    </div>
+
+</div>
+
+
+<!-- hidden input fields to store values -->
+<form id = "form" action="/create" method="post" onsubmit="return updateHiddenInputs()">
+    <input type="hidden" id="instrumentalnessInput" name="instrumentalness">
+    <input type="hidden" id="speechinessInput" name="speechiness">
+    <input type="hidden" id="acousticnessInput" name="acousticness">
+    <input type="hidden" id="livenessInput" name="liveness">
+    <input type="hidden" id="danceabilityInput" name="danceability">
+    <input type="hidden" id="energyInput" name="energy">
+    <input type="hidden" name="decade" id="decadeInput">
+    <div class = "button">
+        <input type = "submit" id = "button" value = "Show similar songs">
+    </div>
+</form>
+
+<div class = "gap"></div>
+
+<!-- hidden results -->
+<div class = "results-wrapper">
+
+    <div class="timeline" id="timeline" {% if data %}style="display: block;"{% endif %}>
+        <div class = "line"></div>
+        <div class = "dots">
+            <div class = "dot-wrap {% if df == 'df_60s' %}active{% endif %}" id = "df_60s">
+                <div class = "dot"></div>
+                1960s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_70s' %}active{% endif %}" id = "df_70s">
+                <div class = "dot"></div>
+                1970s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_80s' %}active{% endif %}" id = "df_80s">
+                <div class = "dot"></div>
+                1980s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_90s' %}active{% endif %}" id = "df_90s">
+                <div class = "dot"></div>
+                1990s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_00s' %}active{% endif %}" id = "df_00s">
+                <div class = "dot"></div>
+                2000s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_10s' %}active{% endif %}" id = "df_10s">
+                <div class = "dot"></div>
+                2010s
+            </div>
+            <div class = "dot-wrap {% if df == 'df_20s' %}active{% endif %}" id = "df_20s">
+                <div class = "dot"></div>
+                2020s
+            </div>
+        </div>
+    </div>
+    
+
+    <div class = "list">
+    {% for popularity, song, artist, audio, image in data %}
+    <div class = "row">
+        <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
+        <div class = "embed">
+        <div class = "image"><img src = "{{ image }}"></div>
+        <div class = "song-artist">
+            <div class = "song">{{ song }}</div>
+            <div class = "artist">{{ artist }}</div>
+            <div class = "preview">
+                <audio controls id="audio{{ loop.index }}">
+                    <source src={{audio}} type="audio/mpeg">
+                  </audio>
+                  <!-- consider adding custom button using js to play audio preview -->
+            </div>
+        </div>
+        <div class="play" onclick="togglePlayPause('{{ loop.index }}')">
+            <img id="playPause{{ loop.index }}" src="../static/Play.png" style = "height: 30px;width:30px;">
+        </div>        
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    </div>
+</div>
+
+
+<script>
+
+window.addEventListener('load', restoreScrollPosition);
+
+function togglePlayPause(index) {
+    var audio = document.getElementById('audio' + index);
+    var playPauseImg = document.getElementById('playPause' + index);
+
+    if (audio.paused) {
+        audio.play();
+        playPauseImg.src = "../static/Pause.png";
+    } else {
+        audio.pause();
+        playPauseImg.src = "../static/Play.png";
+    }
+}
+
+
+
+// code for timeline
+const dotWraps = document.querySelectorAll('.dot-wrap');
+
+dotWraps.forEach(dotWrap => {
+  dotWrap.addEventListener('click', function() {
+    dotWraps.forEach(element => {
+      element.classList.remove('active');
+    });
+    
+    this.classList.add('active');
+    const decadeId = this.id;
+    document.getElementById("instrumentalnessInput").value = document.getElementById("instrumentalnessValue").textContent;
+    document.getElementById("speechinessInput").value = document.getElementById("speechinessValue").textContent;
+    document.getElementById("acousticnessInput").value = document.getElementById("acousticnessValue").textContent;
+    document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
+    document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
+    document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
+    document.getElementById('decadeInput').value = decadeId;
+    storeScrollPosition();
+    document.getElementById('form').submit();
+  });
+});
+
+
+// code for circles
+const energy = {
+    element: document.getElementById('energy'),
+    valueElement: document.getElementById('energyValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const speechiness = {
+    element: document.getElementById('speechiness'),
+    valueElement: document.getElementById('speechinessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const acousticness = {
+    element: document.getElementById('acousticness'),
+    valueElement: document.getElementById('acousticnessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+const instrumentalness = {
+    element: document.getElementById('instrumentalness'),
+    valueElement: document.getElementById('instrumentalnessValue'),
+    dragging: false,
+    startAngle: 0,
+    currentValue: 0
+};
+
+energy.element.addEventListener('mousedown', (event) => startDrag(event, energy));
+energy.element.addEventListener('touchstart', (event) => startDrag(event, energy));
+
+speechiness.element.addEventListener('mousedown', (event) => startDrag(event, speechiness));
+speechiness.element.addEventListener('touchstart', (event) => startDrag(event, speechiness));
+
+acousticness.element.addEventListener('mousedown', (event) => startDrag(event, acousticness));
+acousticness.element.addEventListener('touchstart', (event) => startDrag(event, acousticness));
+
+instrumentalness.element.addEventListener('mousedown', (event) => startDrag(event, instrumentalness));
+instrumentalness.element.addEventListener('touchstart', (event) => startDrag(event, instrumentalness));
+
+function startDrag(event, circle) {
+    event.preventDefault();
+    circle.dragging = true;
+    circle.startAngle = getAngle(event, circle.element);
+
+    document.addEventListener('mousemove', (event) => drag(event, circle));
+    document.addEventListener('touchmove', (event) => drag(event, circle));
+    document.addEventListener('mouseup', () => stopDrag(circle));
+    document.addEventListener('touchend', () => stopDrag(circle));
+}
+
+function drag(event, circle) {
+    if (!circle.dragging) return;
+    const currentAngle = getAngle(event, circle.element);
+    let angleChange = currentAngle - circle.startAngle;
+    let totalRotation = (circle.currentValue + angleChange / 3) * 3.6;
+    totalRotation = (totalRotation + 360) % 360;
+
+    circle.currentValue = Math.round(totalRotation / 3.6);
+
+    if (circle.currentValue > 100) {
+        circle.currentValue = 0;
+    } else if (circle.currentValue < 0) {
+        circle.currentValue = 100;
+    }
+
+    circle.valueElement.innerText = circle.currentValue;
+    circle.element.style.transform = `rotate(${totalRotation}deg)`;
+    circle.startAngle = currentAngle;
+}
+
+function stopDrag(circle) {
+    circle.dragging = false;
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', () => stopDrag(circle));
+    document.removeEventListener('touchmove', drag);
+    document.removeEventListener('touchend', () => stopDrag(circle));
+}
+
+function getAngle(event, element) {
+    const clientX = event.clientX || event.touches[0].clientX;
+    const clientY = event.clientY || event.touches[0].clientY;
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const angle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+    return angle;
+}
+
+// code for sliders
+const liveness = document.getElementById("liveness");
+const livenessValue = document.getElementById("livenessValue");
+
+    liveness.oninput = function() {
+        livenessValue.innerHTML = this.value;
+    };
+
+    liveness.addEventListener("input", function() {
+        this.style.setProperty("--value", this.value);
+    }); 
+
+const danceability = document.getElementById("danceability");
+const danceabilityValue = document.getElementById("danceabilityValue");
+
+danceability.oninput = function() {
+    danceabilityValue.innerHTML = this.value;
+};
+
+danceability.addEventListener("input", function() {
+    this.style.setProperty("--value", this.value);
+}); 
+
+// updates hidden input values
+function updateHiddenInputs() {
+    document.getElementById("instrumentalnessInput").value = document.getElementById("instrumentalnessValue").textContent;
+    document.getElementById("speechinessInput").value = document.getElementById("speechinessValue").textContent;
+    document.getElementById("acousticnessInput").value = document.getElementById("acousticnessValue").textContent;
+    document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
+    document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
+    document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
+    document.getElementById('decadeInput').value = "df_60s"; // default
+}
+
+document.getElementById("button").addEventListener("click", function() {
+    updateHiddenInputs();
+});
+
+function storeScrollPosition() {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+}
+
+// Function to restore the scroll position
+function restoreScrollPosition() {
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        sessionStorage.removeItem('scrollPosition');
+    }
+}
+
+</script>
+</body>
+</html>
