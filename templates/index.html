@@ -40,17 +40,6 @@
         <div class="grid gap-5" id="feature-grid"></div>
     </div>
     <div id="audio-info" class="container-fluid scale-down">
-        <!-- <div><img src="../static/images/wave.gif" class="wave"/></div> -->
-        <!-- <div class="long-feature-card" style="margin-top: 2%;">
-            <div style="text-align: left">
-                <div class="audio-scale-text">0 = Low Dancability</div>
-                <iframe class="audio-embed" src="https://open.spotify.com/embed/track/7JURn7T7Tq3wszT0aEieBM?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-            <div style="text-align: right">
-                <div class="audio-scale-text">1 = High Dancability</div>
-                <iframe class="audio-embed" src="https://open.spotify.com/embed/track/3sy0rren2cVFNfkDxa0q2e?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-        </div> -->
     </div>
 </div>
 
@@ -65,6 +54,150 @@
 {% endblock %}
 
 {% block interactive %}
-<h1>Interactive</h1>
-<div class="" style="height:200vh"></div>
+<div class="body">
+    <div class = "wrapper">
+        <div class = "text-wrapper">
+            <div class = "text">Engineer a song!</div>
+            <div class = "subtext">See how your taste in music compares to top hits on the billboard.</div>
+        </div>
+    <div class = "deck">
+    
+        <div class = "circleElement">
+            <div class = "label">INSTRUMENTALNESS</div>
+            <div class="circle" id="instrumentalness">
+                <div class="tick"></div>
+            </div>
+            <div class = "number" id="instrumentalnessValue">0</div>
+        </div>
+    
+        <div class = "column">
+            <div class = "wrapperSmall">
+    
+                <div class = "circleElement">
+                    <div class = "label">SPEECHINESS</div>
+                    <div class="circleSmall" id="speechiness">
+                        <div class="tickSmall"></div>
+                    </div>
+                    <div class = "number" id="speechinessValue">0</div>
+                </div>
+    
+                <div class = "circleElement">
+                    <div class = "label">ACOUSTICNESS</div>
+                    <div class="circleSmall" id="acousticness">
+                        <div class="tickSmall"></div>
+                    </div>
+                    <div class = "number" id="acousticnessValue">0</div>
+                </div>
+        </div>
+    
+        <div class = "wrapperSmall">
+    
+            <div class="circleElement" style = "margin-top: 90px;">
+                <div class = "label" style = "margin-bottom: 90px;">LIVENESS</div>
+                <input type="range" min="0" max="100" value="50" class="slider" id="liveness">
+                <div class="number" id="livenessValue" style = "margin-top: 90px;">50</div>
+            </div>
+    
+            <div class="circleElement" style = "margin-top: 90px;">
+                <div class = "label" style = "margin-bottom: 90px;">DANCEABILITY</div>
+                <input type="range" min="0" max="100" value="50" class="slider" id="danceability">
+                <div class="number" id="danceabilityValue" style = "margin-top: 90px;">50</div>
+            </div>
+    
+        </div>
+    
+        </div>
+    
+        <div class = "circleElement">
+            <div class = "label">ENERGY</div>
+            <div class="circle" id="energy">
+                <div class="tick"></div>
+            </div>
+            <div class = "number" id="energyValue">0</div>
+        </div>
+    
+    </div>
+    
+    
+    <!-- hidden input fields to store values -->
+    <form id = "form" action="/create" method="post" onsubmit="return updateHiddenInputs()">
+        <input type="hidden" id="instrumentalnessInput" name="instrumentalness">
+        <input type="hidden" id="speechinessInput" name="speechiness">
+        <input type="hidden" id="acousticnessInput" name="acousticness">
+        <input type="hidden" id="livenessInput" name="liveness">
+        <input type="hidden" id="danceabilityInput" name="danceability">
+        <input type="hidden" id="energyInput" name="energy">
+        <input type="hidden" name="decade" id="decadeInput">
+        <div class = "button">
+            <input type = "submit" id = "button" value = "Show similar songs">
+        </div>
+    </form>
+    
+    <div class = "gap"></div>
+    
+    <!-- hidden results -->
+    <div class = "results-wrapper">
+    
+        <div class="timeline" id="timeline" {% if data %}style="display: block;"{% endif %}>
+            <div class = "line"></div>
+            <div class = "dots">
+                <div class = "dot-wrap {% if df == 'df_60s' %}active{% endif %}" id = "df_60s">
+                    <div class = "dot"></div>
+                    1960s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_70s' %}active{% endif %}" id = "df_70s">
+                    <div class = "dot"></div>
+                    1970s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_80s' %}active{% endif %}" id = "df_80s">
+                    <div class = "dot"></div>
+                    1980s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_90s' %}active{% endif %}" id = "df_90s">
+                    <div class = "dot"></div>
+                    1990s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_00s' %}active{% endif %}" id = "df_00s">
+                    <div class = "dot"></div>
+                    2000s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_10s' %}active{% endif %}" id = "df_10s">
+                    <div class = "dot"></div>
+                    2010s
+                </div>
+                <div class = "dot-wrap {% if df == 'df_20s' %}active{% endif %}" id = "df_20s">
+                    <div class = "dot"></div>
+                    2020s
+                </div>
+            </div>
+        </div>
+        
+    
+        <div class = "grid gap-5">
+        {% for popularity, song, artist, audio, image in data %}
+        <div class="p-2 g-col-4">
+            <!-- <div class="p-2 g-col-4"> -->
+                <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
+                <div class = "embed">
+                    <img class="img" src = "{{ image }}">
+                    <div class = "song-artist">
+                    <div class = "song">{{ song }}</div>
+                    <div class = "artist">{{ artist }}</div>
+                    <div class = "preview">
+                    <audio controls id="audio{{ loop.index }}">
+                        <source src={{audio}} type="audio/mpeg">
+                      </audio>
+                      <!-- consider adding custom button using js to play audio preview -->
+                    </div>
+                </div>
+            <div class="play" onclick="togglePlayPause('{{ loop.index }}')">
+                <img class="img" id="playPause{{ loop.index }}" src="../static/Play.png" style = "height: 30px;width:30px;">
+            </div>        
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

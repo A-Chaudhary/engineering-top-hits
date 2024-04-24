@@ -47,27 +47,6 @@ def create():
             "Energy": int(request.form['energy'])/100
         })
 
-        # def find_closest_songs(user_input, dataset, num_songs=5):
-        #     user_attributes = user_input.index.tolist()
-        #     closest_songs = []
-        #     threshold = 0.1
-            
-        #     while len(closest_songs) < num_songs:
-        #         for index, row in dataset.iterrows():
-        #             diffs = abs(row[user_attributes] - user_input[user_attributes])
-                
-        #             if (diffs <= threshold).all():
-        #                 closest_songs.append(index)
-                        
-        #                 if len(closest_songs) >= num_songs:
-        #                     break
-                
-        #         if len(closest_songs) < num_songs:
-        #             threshold += 0.1
-            
-        #     return closest_songs[:num_songs]
-
-        # find closest songs
         if request.form["decade"] == "df_60s":
             df = df_60s
         elif request.form["decade"] == "df_70s":
@@ -98,8 +77,9 @@ def create():
 
         data = zip(popularities, song_names, artists, audios, images)
 
-        return render_template('create.html', data = data, df = request.form["decade"])
-    return render_template('create.html')
+        return render_template('index.html', data = data, df = request.form["decade"])
+    
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
