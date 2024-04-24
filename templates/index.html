@@ -8,7 +8,7 @@
 
 <div class="row section" id="intro">
  <div class="col-1"></div>
- <div class="col-5 align-self-center">
+ <div class="col-6 align-self-center">
     <div class="body-text">
         <div>
             Spotify is the largest platform for music streaming on the internet. 
@@ -20,7 +20,6 @@
         <div class="main-question">Is there perfect audio formula that makes  a top hit?</div>
     </div>
  </div>
- <div class="col-1"></div>
  <div class="col-4">
     <img src="../static/images/spotify-img.png" class="half-img"/>
  </div>
@@ -46,26 +45,52 @@
 {% endblock %}
 
 {% block exploration %}
-<h1>Decade Exploration</h1>
-<div class="data-parent" style="height:1200vh">
-    <div id="data-viz"></div>
+<div class="engineer-section" id="data-viz-intro">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-6 body-text">
+        <!-- TODO: Change this section with @Elaine's Decade Data -->
+            <div class="main-question" style="margin-top: 0;">70's Disco</div>
+            <div class="action-text" id="decade-description">
+                The 1970s witnessed a dynamic musical scene with disco dominating dance floors, 
+                rock bands delivering anthems, and singer-songwriters creating introspective classics. The era was defined 
+                by experimentation and fusion, shaping the evolution of music for years to come.
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="top-song">HIT SONG OF THE 70S</div>
+            <iframe class="audio-embed" src="https://open.spotify.com/embed/track/1LYNuVLtV374Iy7vlHy6BO?utm_source=generator=theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+        <!--  -->
+    </div>
 </div>
+<div class="graph-row">
+    <div class="data-parent section" style="height:1200vh">
+        <div id="data-viz"></div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block interactive %}
+<div class="engineer-section" id="engineer-intro">
+    <div class="row" style="margin-bottom: 2%">
+        <div class="col-1"></div>
+        <div class="col-11 body-text">
+            <div class="main-question" style="margin-top: 0;">Engineer a Song!</div>
+            <div id="action-text">See how your taste in music compares to top hits on the billboard</div>
+        </div>
+    </div>
+</div>
+
 <div class="body">
     <div class = "wrapper">
-        <div class = "text-wrapper">
-            <div class = "text">Engineer a song!</div>
-            <div class = "subtext">See how your taste in music compares to top hits on the billboard.</div>
-        </div>
-
-    <div class = "deck">
-        <div class = "circleElement">
-            <div class = "label">INSTRUMENTALNESS</div>
-            <div class="circle" id="instrumentalness">
-                <div class="tick"></div>
-            </div>
+        <div class = "deck">
+            <div class = "circleElement">
+                <div class = "label">INSTRUMENTALNESS</div>
+                <div class="circle" id="instrumentalness">
+                    <div class="tick"></div>
+                </div>
             <div class = "number" id="instrumentalnessValue">0</div>
         </div>
     
