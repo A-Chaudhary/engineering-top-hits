@@ -50,7 +50,6 @@
 <div class="data-parent" style="height:1200vh">
     <div id="data-viz"></div>
 </div>
-
 {% endblock %}
 
 {% block interactive %}
@@ -60,8 +59,8 @@
             <div class = "text">Engineer a song!</div>
             <div class = "subtext">See how your taste in music compares to top hits on the billboard.</div>
         </div>
+
     <div class = "deck">
-    
         <div class = "circleElement">
             <div class = "label">INSTRUMENTALNESS</div>
             <div class="circle" id="instrumentalness">
@@ -118,7 +117,6 @@
     
     </div>
     
-    
     <!-- hidden input fields to store values -->
     <form id = "form" action="/create" method="post" onsubmit="return updateHiddenInputs()">
         <input type="hidden" id="instrumentalnessInput" name="instrumentalness">
@@ -173,10 +171,10 @@
         </div>
         
     
+
         <div class = "grid gap-5">
         {% for popularity, song, artist, audio, image in data %}
         <div class="p-2 g-col-4">
-            <!-- <div class="p-2 g-col-4"> -->
                 <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
                 <div class = "embed">
                     <img class="img" src = "{{ image }}">
@@ -200,4 +198,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
