@@ -21,7 +21,7 @@ function run_viz() {
 
         $(document).ready(function() {
             draw_viz(data, STARTING_DATE, ENDING_DATE);
-            var $parent = $('.data-parent');
+            var $parent = $('.data-visualization');
             var $imageContainer = $('#data-viz');
             var $image = $imageContainer.find('svg');
             // Set width of image container to match parent width
@@ -51,6 +51,8 @@ function run_viz() {
                   top: 0, // Reset initial position if needed
                   bottom: 'auto'
                 });
+                  
+                $("#music-lines").removeClass("exploration-section")
 
                 if (scrollTop + windowHeight>= parentTop) {
                     console.log('hit');
@@ -64,10 +66,12 @@ function run_viz() {
               // Check if parent div is in the view
               else if (scrollTop >= parentTop && scrollTop <= (parentBottom - imageHeight)) {
                 // console.log('inside', parentTop, scrollTop,parentBottom,  parentBottom - imageHeight, imageHeight);
-                // Pin the image container
+                  // Pin the image container
+                $("#music-lines").addClass("exploration-section")
+
                 $imageContainer.css({
                   position: 'fixed',
-                  top: 0,
+                  top: "200px",
                   bottom: 'auto'
                 });
 
@@ -121,7 +125,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
     // const width = 840;
     const width = parseInt($(window).width() * (0.6));
-    const height = 600;
+    const height = 500;
     const marginTop = 20;
     const marginRight = 20;
     const marginBottom = 30;
@@ -141,7 +145,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     // Create the SVG container.
     const svg = d3.create("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
 
     // Loop through each feature and draw a line for it
     features.forEach((feature, index) => {

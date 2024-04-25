@@ -45,27 +45,29 @@
 {% endblock %}
 
 {% block exploration %}
-<div class="engineer-section" id="data-viz-intro">
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-6 body-text">
-        <!-- TODO: Change this section with @Elaine's Decade Data -->
-            <div class="main-question" style="margin-top: 0;">70's Disco</div>
-            <div class="decade-description">
-                The 1970s witnessed a dynamic musical scene with disco dominating dance floors, 
-                rock bands delivering anthems, and singer-songwriters creating introspective classics. The era was defined 
-                by experimentation and fusion, shaping the evolution of music for years to come.
+<div class="data-visualization">
+    <div class="exploration-section" id="music-lines">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-6 body-text">
+            <!-- TODO: Change this section with @Elaine's Decade Data -->
+                <div class="main-question" style="margin-top: 0;">70's Disco</div>
+                <div class="decade-description">
+                    The 1970s witnessed a dynamic musical scene with disco dominating dance floors, 
+                    rock bands delivering anthems, and singer-songwriters creating introspective classics. The era was defined 
+                    by experimentation and fusion, shaping the evolution of music for years to come.
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="top-song">HIT SONG OF THE 70S</div>
+                <iframe class="audio-embed" src="https://open.spotify.com/embed/track/1LYNuVLtV374Iy7vlHy6BO?utm_source=generator=theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
         </div>
-        <div class="col-4">
-            <div class="top-song">HIT SONG OF THE 70S</div>
-            <iframe class="audio-embed" src="https://open.spotify.com/embed/track/1LYNuVLtV374Iy7vlHy6BO?utm_source=generator=theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
     </div>
-</div>
-<div class="graph-row">
-    <div class="data-parent" style="height:1200vh">
-        <div id="data-viz"></div>
+    <div class="graph-row">
+        <div class="data-parent" style="height:1200vh">
+            <div id="data-viz"></div>
+        </div>
     </div>
 </div>
 
