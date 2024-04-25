@@ -86,7 +86,22 @@ def create():
             'images': images
         }
 
-        return jsonify(data)
+        # sorting in increasing popularity
+
+        combined_data = zip(data['song_names'], data['popularities'], data['artists'], data['audios'], data['images'])
+        sorted_data = sorted(combined_data, key=lambda x: x[1])
+        sorted_song_names, sorted_popularities, sorted_artists, sorted_audios, sorted_images = zip(*sorted_data)
+
+        sorted_dict = {
+            'song_names': list(sorted_song_names),
+            'popularities': list(sorted_popularities),
+            'artists': list(sorted_artists),
+            'audios': list(sorted_audios),
+            'images': list(sorted_images)
+        }
+
+
+        return jsonify(sorted_dict)
     
     return 0
 

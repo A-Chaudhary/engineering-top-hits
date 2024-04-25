@@ -1,5 +1,142 @@
 window.addEventListener('load', restoreScrollPosition);
 
+$(document).ready(function() {
+    $('#dots').on('click', '.dot-wrap', function() {
+        event.preventDefault();
+
+        $('.dot-wrap').removeClass('active');
+        $(this).addClass('active');
+
+        var formData = {
+            instrumentalness: $('#instrumentalnessValue').text(),
+            speechiness: $('#speechinessValue').text(),
+            acousticness: $('#acousticnessValue').text(),
+            liveness: $('#livenessValue').text(),
+            danceability: $('#danceabilityValue').text(),
+            energy: $('#energyValue').text(),
+            decade: $(this).text()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/create', 
+            data: formData,
+            success: function(response) {
+                console.log(response)
+                $('#songList').empty();
+
+                // add timeline here
+                var decades = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+                $('#dots').empty();
+
+                var decades = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+                for (var i = 0; i < decades.length; i++) {
+                    var dotHTML = '<div class="dot-wrap';
+                    if (formData.decade === decades[i]) {
+                        dotHTML += ' active'; // Add 'active' class if current decade matches formData.decade
+                    }
+                    dotHTML += '"><div class="dot"></div>' + decades[i] + '</div>';
+                    $('#dots').append(dotHTML);
+                }
+
+
+                // generating and formatting song list
+                response.song_names.forEach(function(song, index) {
+                var songElement = $('<div class="song"></div>');
+                songElement.append('<div class="popularity">' + response.popularities[index] + '<div class="popularity-text">Popularity</div></div>');
+                songElement.append('<div class="embed">');
+                songElement.find('.embed').append('<img class="img" src="' + response.images[index] + '">');
+                songElement.find('.embed').append('<div class="song-artist">');
+                songElement.find('.embed .song-artist').append('<div class="song">' + song + '</div>');
+                songElement.find('.embed .song-artist').append('<div class="artist">' + response.artists[index] + '</div>');
+                songElement.find('.embed .song-artist').append('<div class="preview">');
+                songElement.find('.embed .song-artist .preview').append('<audio controls id="audio' + index + '">');
+                songElement.find('.embed .song-artist .preview audio').append('<source src="' + response.audios[index] + '" type="audio/mpeg">');
+                
+                // conditionally add the play button if audio link is not "None"
+                if (response.audios[index] !== "None") {
+                    songElement.find('.embed').append('<div class="play" onclick="togglePlayPause(' + index + ')">');
+                    songElement.find('.embed .play').append('<img class="img" id="playPause' + index + '" src="../static/Play.png" style="height: 30px;width:30px;">');
+                }
+                
+                songElement.append('</div>'); 
+                $('#songList').append(songElement);
+            });
+
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+
+    $('#button').click(function(event) {
+        event.preventDefault();
+
+        var formData = {
+            instrumentalness: $('#instrumentalnessValue').text(),
+            speechiness: $('#speechinessValue').text(),
+            acousticness: $('#acousticnessValue').text(),
+            liveness: $('#livenessValue').text(),
+            danceability: $('#danceabilityValue').text(),
+            energy: $('#energyValue').text(),
+            decade: '1960s'
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/create', 
+            data: formData,
+            success: function(response) {
+                console.log(response)
+                $('#songList').empty();
+
+                $('#dots').empty();
+
+                var decades = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+                for (var i = 0; i < decades.length; i++) {
+                    var dotHTML = '<div class="dot-wrap';
+                    if (formData.decade === decades[i]) {
+                        dotHTML += ' active'; // Add 'active' class if current decade matches formData.decade
+                    }
+                    dotHTML += '"><div class="dot"></div>' + decades[i] + '</div>';
+                    $('#dots').append(dotHTML);
+                }
+                    
+                // generating and formatting song list
+                response.song_names.forEach(function(song, index) {
+                var songElement = $('<div class="song"></div>');
+                songElement.append('<div class="popularity">' + response.popularities[index] + '<div class="popularity-text">Popularity</div></div>');
+                songElement.append('<div class="embed">');
+                songElement.find('.embed').append('<img class="img" src="' + response.images[index] + '">');
+                songElement.find('.embed').append('<div class="song-artist">');
+                songElement.find('.embed .song-artist').append('<div class="song">' + song + '</div>');
+                songElement.find('.embed .song-artist').append('<div class="artist">' + response.artists[index] + '</div>');
+                songElement.find('.embed .song-artist').append('<div class="preview">');
+                songElement.find('.embed .song-artist .preview').append('<audio controls id="audio' + index + '">');
+                songElement.find('.embed .song-artist .preview audio').append('<source src="' + response.audios[index] + '" type="audio/mpeg">');
+                
+                // conditionally add the play button if audio link is not "None"
+                if (response.audios[index] !== "None") {
+                    songElement.find('.embed').append('<div class="play" onclick="togglePlayPause(' + index + ')">');
+                    songElement.find('.embed .play').append('<img class="img" id="playPause' + index + '" src="../static/Play.png" style="height: 30px;width:30px;">');
+                }
+                
+                songElement.append('</div>'); 
+                $('#songList').append(songElement);
+            });
+
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+
 function togglePlayPause(index) {
     var audio = document.getElementById('audio' + index);
     var playPauseImg = document.getElementById('playPause' + index);
