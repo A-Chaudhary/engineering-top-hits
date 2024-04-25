@@ -240,7 +240,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 const data = {
     labels: ['Danceability', 'Energy', 'Speechiness', 'Acousticness', 'Instrumentalness', 'Liveness'],
     datasets: [
-      {
+    {
       label: 'Track values',
       data: [0.708,0.955,0.0489,0.111,0.532,0.952],
       borderWidth: 2,
