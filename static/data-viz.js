@@ -1,5 +1,3 @@
-
-const RANKCUTOFF = 10;
 const BEGIN_DATE = new Date("1960-01-01");
 const END_DATE = new Date("2015-12-31");
 
@@ -11,12 +9,14 @@ function run_viz() {
             data[d_idx].date = new Date(`${data[d_idx].Year}-${data[d_idx].Month}-1`);
         }
 
-        var STARTING_DATE = new Date('1960-01-01');
+        var STARTING_DATE = new Date(BEGIN_DATE);
         var ENDING_DATE = new Date(STARTING_DATE);
         ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
     
         // Extract the features you want to visualize
     const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
+
+    const features_std = ["Danceability_std", "Energy_std", "Speechiness_std", "Acousticness_std", "Instrumentalness_std", "Liveness_std"];
 
 
         $(document).ready(function() {
@@ -38,9 +38,32 @@ function run_viz() {
                 .range([BEGIN_DATE, END_DATE]);
           
             $(window).on('scroll', function() {
-                var scrollTop = $(this).scrollTop();
+              var scrollTop = $(this).scrollTop();
+              var parentTop = $parent.offset().top;
+              var parentBottom = parentTop + $parent.outerHeight();
+              var imageHeight = $imageContainer.height();
+              var windowHeight = $(window).height();
+              if (scrollTop <= parentTop) {
+                // console.log('above',parentTop, scrollTop, parentBottom);
+                // Unpin the image container
+                $imageContainer.css({
+                  position: 'absolute',
+                  top: 0, // Reset initial position if needed
+                  bottom: 'auto'
+                });
+
+                if (scrollTop + windowHeight>= parentTop) {
+                    console.log('hit');
+                    STARTING_DATE = scrollXDate(Math.min(scrollTop, parentBottom - imageHeight))
+                    ENDING_DATE = new Date(STARTING_DATE);
+                    ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
+                    // console.log(STARTING_DATE, ENDING_DATE);
+                    draw_viz(data, STARTING_DATE, ENDING_DATE);
+                }
+              }
               // Check if parent div is in the view
-              if (scrollTop >= parentTop + imageHeight && scrollTop <= parentBottom) {
+              else if (scrollTop >= parentTop && scrollTop <= (parentBottom - imageHeight)) {
+                // console.log('inside', parentTop, scrollTop,parentBottom,  parentBottom - imageHeight, imageHeight);
                 // Pin the image container
                 $imageContainer.css({
                   position: 'fixed',
@@ -52,23 +75,16 @@ function run_viz() {
                 STARTING_DATE = scrollXDate(Math.min(scrollTop, parentBottom - imageHeight))
                 ENDING_DATE = new Date(STARTING_DATE);
                 ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
-                
-                // console.log(parentTop, Math.min(scrollTop, parentBottom - imageHeight), parentBottom);
                 // console.log(STARTING_DATE, ENDING_DATE);
                 draw_viz(data, STARTING_DATE, ENDING_DATE);
+
             } else if (scrollTop > parentBottom - imageHeight) {
+                // console.log('bottom', parentTop, scrollTop, parentBottom);
                 // Pin the image container at the bottom
                 $imageContainer.css({
                   position: 'absolute',
                   bottom: 0,
                   top: 'auto'
-                });
-              } else {
-                // Unpin the image container
-                $imageContainer.css({
-                  position: 'absolute',
-                  top: 0, // Reset initial position if needed
-                  bottom: 'auto'
                 });
               }
             });
@@ -91,11 +107,21 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
         "Acousticness_mean": "#509BF5", 
         "Instrumentalness_mean": "#FFC564", 
         "Liveness_mean": "#6E4E73"
-    }
+    };
+
+    const feature_std_colors = {
+        "Danceability_std": "#F573A0", 
+        "Energy_std": "#FF4632", 
+        "Speechiness_std": "#1ED760", 
+        "Acousticness_std": "#509BF5", 
+        "Instrumentalness_std": "#FFC564", 
+        "Liveness_std": "#6E4E73"
+    };
+
 
     // const width = 840;
     const width = parseInt($(window).width() * (0.6));
-    const height = 400;
+    const height = 600;
     const marginTop = 20;
     const marginRight = 20;
     const marginBottom = 30;
@@ -111,10 +137,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
         .domain([0, 1])
         .range([height - marginBottom, marginTop]);
 
-    // Define a color scale
-    const colorScale = d3.scaleSequential()
-  .domain([STARTING_DATE, ENDING_DATE])
-  .interpolator(d3.interpolateRainbow);
 
     // Create the SVG container.
     const svg = d3.create("svg")
@@ -127,12 +149,45 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
             .x(d => x(d.date))
             .y(d => y(d[feature]));
 
-        svg.append("path")
+        const path = svg.append("path")
             .datum(data)
             .attr("fill", "none")
             .attr("stroke", feature_colors[feature])
-            .attr("stroke-width", 2)
-            .attr("d", line);
+            .attr("stroke-width", 4)
+            .attr("d", line)
+            .on('mouseover', (event, data) =>{
+                // console.log('mouseenter', feature);
+                // console.log(feature, data);
+
+                // Fade out other lines
+                svg.selectAll("path")
+                    .style("opacity", 0.3);
+
+                // Highlight the current line
+                path.style("opacity", 1);
+
+                svg.append("path")
+                    .datum(data)
+                    .attr("class", "std-line")
+                    .attr("fill", `${feature_colors[feature]}33`)
+                    .attr("stroke", "none")
+                    .attr("d", d3.area()
+                        .x(d=> x(d.date))
+                        .y0((d, i) => { 
+                            return y(- parseFloat(d[`${feature.split('_')[0]}_std`]) + parseFloat(data[i][feature]))
+                        })
+                        .y1((d, i) => { 
+                            return y(parseFloat(d[`${feature.split('_')[0]}_std`]) + parseFloat(data[i][feature]))
+                        })
+                    )
+            })
+            .on('mouseout', (e, d)=>{
+                // Restore opacity of all lines
+                // console.log('mouseout', feature);
+                svg.selectAll("path")
+                    .style("opacity", 1);
+                svg.selectAll(".std-line").remove();
+            }) ;
     });
 
     // Add the x-axis.

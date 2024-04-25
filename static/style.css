@@ -10,6 +10,18 @@
     margin-bottom: 20%;
 }
 
+.engineer-section{
+    margin-top: 20%;
+}
+
+.decade-description{
+    width: 60%;
+}
+
+.top-song{
+    margin-bottom: 5%;
+}
+
 .wave{
     width: 100%;
     height: 128px;
@@ -132,6 +144,11 @@
 .audio-embed{
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.graph-row{
+    margin-left: 6%;
+    margin-right: 6%;
 }
 
 /*  */
