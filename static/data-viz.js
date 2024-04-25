@@ -1,7 +1,6 @@
 const BEGIN_DATE = new Date("1960-01-01");
 const END_DATE = new Date("2015-12-31");
 
-
 function run_viz() {
     d3.csv('../static/average+stv_month.csv').then(function(master_data) {
         var data = master_data;
@@ -19,8 +18,8 @@ function run_viz() {
         const features_std = ["Danceability_std", "Energy_std", "Speechiness_std", "Acousticness_std", "Instrumentalness_std", "Liveness_std"];
 
 
-        $(document).ready(function() {
-            draw_viz(data, STARTING_DATE, ENDING_DATE);
+      $(document).ready(function () {
+          draw_viz(data, STARTING_DATE, ENDING_DATE);
             var $parent = $('.data-visualization');
             var $imageContainer = $('#data-viz');
             var $image = $imageContainer.find('svg');
@@ -44,10 +43,10 @@ function run_viz() {
               var imageHeight = $imageContainer.height();
               var windowHeight = $(window).height();
               console.log(scrollTop)
-              if (scrollTop < 5550 && scrollTop > 5250) {
-                console.log("hi")
-                var popup = document.querySelector('.popup');
-                popup.style.display = "flex";
+              
+              if (scrollTop < 5550 && scrollTop > 4500) {
+                var popup = $('.popup');
+                popup.show()
               }
               else {
                 var popup = document.querySelector('.popup');
@@ -112,15 +111,15 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     data = data.filter(d => d.date >= STARTING_DATE && d.date <= ENDING_DATE);
     // console.log(data);
 
-    const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
+  const features = ["Acousticness_mean", "Danceability_mean", "Energy_mean", "Instrumentalness_mean", "Liveness_mean", "Speechiness_mean"];
 
-    const feature_colors = {
-        "Danceability_mean": "#F573A0", 
-        "Energy_mean": "#FF4632", 
-        "Speechiness_mean": "#1ED760", 
+  const feature_colors = {
         "Acousticness_mean": "#509BF5", 
+        "Danceability_mean": "#F573A0", 
+        "Energy_mean": "#FF4632",
         "Instrumentalness_mean": "#FFC564", 
-        "Liveness_mean": "#6E4E73"
+        "Liveness_mean": "#6E4E73",
+        "Speechiness_mean": "#1ED760", 
     };
 
     const feature_std_colors = {
@@ -134,7 +133,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
 
     // const width = 840;
-    const width = parseInt($(window).width() * (0.6));
+    const width = parseInt($(window).width() * (0.48));
     const height = 500;
     const marginTop = 20;
     const marginRight = 20;
@@ -241,7 +240,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 const data = {
     labels: ['Danceability', 'Energy', 'Speechiness', 'Acousticness', 'Instrumentalness', 'Liveness'],
     datasets: [
-      {
+    {
       label: 'Track values',
       data: [0.708,0.955,0.0489,0.111,0.532,0.952],
       borderWidth: 2,
@@ -258,14 +257,13 @@ const data = {
   ]
   };
 
-  const options = {
-scale: {
+const options = {
+  scale: {
   angleLines: {
     display: true
+    },
   },
-
-},
-maintainAspectRatio: false 
+  maintainAspectRatio: false,
 };
 
   const ctx = document.getElementById('radarChart').getContext('2d');
