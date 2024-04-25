@@ -48,7 +48,10 @@
 }
 
 .half-img{
-    width: 100%
+    width: 100%;
+    animation: pulse;
+    animation-iteration-count: infinite;
+    animation-duration: 6s;
 }
 
 .center{
@@ -538,6 +541,8 @@
         top: 30vw;
         left: 75%;
         transform: translate(-50%, -50%);
+        animation: fadeIn;
+        animation-duration: 1s;
     }
     
     .popup-left {
