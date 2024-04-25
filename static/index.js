@@ -1,7 +1,9 @@
-
+// import {Legend, Swatches} from "@d3/color-legend"
 $(document).ready(function () {
+    $(".popup").hide()
     $("#audio-info").hide()
     $("#go-back").hide()
+
     loadData()
 });
 
