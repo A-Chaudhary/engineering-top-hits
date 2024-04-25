@@ -14,9 +14,9 @@ function run_viz() {
         ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
     
         // Extract the features you want to visualize
-    const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
+        const features = ["Danceability_mean", "Energy_mean", "Speechiness_mean", "Acousticness_mean", "Instrumentalness_mean", "Liveness_mean"];
 
-    const features_std = ["Danceability_std", "Energy_std", "Speechiness_std", "Acousticness_std", "Instrumentalness_std", "Liveness_std"];
+        const features_std = ["Danceability_std", "Energy_std", "Speechiness_std", "Acousticness_std", "Instrumentalness_std", "Liveness_std"];
 
 
         $(document).ready(function() {
@@ -43,6 +43,16 @@ function run_viz() {
               var parentBottom = parentTop + $parent.outerHeight();
               var imageHeight = $imageContainer.height();
               var windowHeight = $(window).height();
+              console.log(scrollTop)
+              if (scrollTop < 5550 && scrollTop > 5250) {
+                console.log("hi")
+                var popup = document.querySelector('.popup');
+                popup.style.display = "flex";
+              }
+              else {
+                var popup = document.querySelector('.popup');
+                popup.style.display = "none";
+              }
               if (scrollTop <= parentTop) {
                 // console.log('above',parentTop, scrollTop, parentBottom);
                 // Unpin the image container
@@ -55,7 +65,7 @@ function run_viz() {
                 $("#music-lines").removeClass("exploration-section")
 
                 if (scrollTop + windowHeight>= parentTop) {
-                    console.log('hit');
+                    const currentYear = scrollXDate(Math.min(scrollTop, parentBottom - imageHeight)).getFullYear();
                     STARTING_DATE = scrollXDate(Math.min(scrollTop, parentBottom - imageHeight))
                     ENDING_DATE = new Date(STARTING_DATE);
                     ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
@@ -228,5 +238,41 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     $("#data-viz").append(svg.node());
 }
 
+const data = {
+    labels: ['Danceability', 'Energy', 'Speechiness', 'Acousticness', 'Instrumentalness', 'Liveness'],
+    datasets: [
+      {
+      label: 'Track values',
+      data: [0.708,0.955,0.0489,0.111,0.532,0.952],
+      borderWidth: 2,
+      borderColor: "#1ED760",
+      backgroundColor: 'rgba(30,215,96,0.1)'
+    },
+    {
+      label: 'Month average values',
+      data: [0.55776,0.41608,0.092808,0.63792,0.001467,0.345436],
+      borderWidth: 2,
+      borderColor: "#FFC564",
+      backgroundColor: 'rgba(255,197,100,0.1)'
+    },
+  ]
+  };
+
+  const options = {
+scale: {
+  angleLines: {
+    display: true
+  },
+
+},
+maintainAspectRatio: false 
+};
+
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  const radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: data,
+    options: options
+  });
 
 run_viz();
