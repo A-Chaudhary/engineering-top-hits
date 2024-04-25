@@ -31,7 +31,7 @@ def create():
             return np.sqrt(np.sum((x1 - x2) ** 2))
 
         # function to find closest songs
-        def find_closest_songs(user_input, dataset, num_songs=5):
+        def find_closest_songs(user_input, dataset, num_songs=6):
             distances = dataset.apply(lambda row: euclidean_distance(user_input, row), axis=1)
             closest_songs = distances.sort_values().head(num_songs)
             return closest_songs.index.tolist()
