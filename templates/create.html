@@ -452,9 +452,11 @@
             </div>
         </div>
     </div>
+
+    <div id = "songList"></div>
     
 
-    <div class = "list">
+    <!-- <div class = "list">
     {% for popularity, song, artist, audio, image in data %}
     <div class = "row">
         <div class = "popularity">{{ popularity }}<div class = "popularity-text">Popularity</div></div>
@@ -467,7 +469,6 @@
                 <audio controls id="audio{{ loop.index }}">
                     <source src={{audio}} type="audio/mpeg">
                   </audio>
-                  <!-- consider adding custom button using js to play audio preview -->
             </div>
         </div>
         <div class="play" onclick="togglePlayPause('{{ loop.index }}')">
@@ -478,12 +479,48 @@
     {% endfor %}
     </div>
     </div>
-</div>
+</div>-->
 
 
 <script>
 
-window.addEventListener('load', restoreScrollPosition);
+$(document).ready(function() {
+        $('#button').click(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                instrumentalness: $('#instrumentalnessValue').text(),
+                speechiness: $('#speechinessValue').text(),
+                acousticness: $('#acousticnessValue').text(),
+                liveness: $('#livenessValue').text(),
+                danceability: $('#danceabilityValue').text(),
+                energy: $('#energyValue').text(),
+                decade: 'df_60s'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/create', 
+                data: formData,
+                success: function(response) {
+                    $('#songList').empty();
+                        
+                        $.each(response, function(index, item) {
+                            var songHtml = '<div>';
+                            songHtml += '<p>Popularity: ' + item.popularity + '</p>';
+                            songHtml += '<p>Song: ' + item.song + '</p>';
+                            songHtml += '<p>Artist: ' + item.artist + '</p>';
+                            songHtml += '</div>';
+                            
+                            $('#songList').append(songHtml);
+                        });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
 
 function togglePlayPause(index) {
     var audio = document.getElementById('audio' + index);
