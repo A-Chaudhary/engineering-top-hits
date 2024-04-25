@@ -10,12 +10,25 @@
     margin-bottom: 20%;
 }
 
+/* .data-visualization {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure it's above other elements */
+.exploration-section{
+    padding-top: 70px;
+    position: sticky;
+    height: auto;
+    top: 0;
+    z-index:1000;
+}
+
 .engineer-section{
     margin-top: 20%;
 }
 
 .decade-description{
-    width: 60%;
+    /* width: 60%; */
+    font-size: 18px;
 }
 
 .top-song{
@@ -149,6 +162,10 @@
 .graph-row{
     margin-left: 6%;
     margin-right: 6%;
+}
+
+#data-viz{
+    margin-top: 80px;
 }
 
 /*  */

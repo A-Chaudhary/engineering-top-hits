@@ -21,7 +21,7 @@ function run_viz() {
 
         $(document).ready(function() {
             draw_viz(data, STARTING_DATE, ENDING_DATE);
-            var $parent = $('.data-parent');
+            var $parent = $('.data-visualization');
             var $imageContainer = $('#data-viz');
             var $image = $imageContainer.find('svg');
             // Set width of image container to match parent width
@@ -51,6 +51,8 @@ function run_viz() {
                   top: 0, // Reset initial position if needed
                   bottom: 'auto'
                 });
+                  
+                $("#music-lines").removeClass("exploration-section")
 
                 if (scrollTop + windowHeight>= parentTop) {
                     console.log('hit');
@@ -64,10 +66,12 @@ function run_viz() {
               // Check if parent div is in the view
               else if (scrollTop >= parentTop && scrollTop <= (parentBottom - imageHeight)) {
                 // console.log('inside', parentTop, scrollTop,parentBottom,  parentBottom - imageHeight, imageHeight);
-                // Pin the image container
+                  // Pin the image container
+                $("#music-lines").addClass("exploration-section")
+
                 $imageContainer.css({
                   position: 'fixed',
-                  top: 0,
+                  top: "200px",
                   bottom: 'auto'
                 });
 
@@ -121,7 +125,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
     // const width = 840;
     const width = parseInt($(window).width() * (0.6));
-    const height = 600;
+    const height = 500;
     const marginTop = 20;
     const marginRight = 20;
     const marginBottom = 30;
@@ -141,10 +145,10 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     // Create the SVG container.
     const svg = d3.create("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
 
     // Loop through each feature and draw a line for it
-    features.forEach(feature => {
+    features.forEach((feature, index) => {
         const line = d3.line()
             .x(d => x(d.date))
             .y(d => y(d[feature]));
@@ -187,7 +191,26 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
                 svg.selectAll("path")
                     .style("opacity", 1);
                 svg.selectAll(".std-line").remove();
-            }) ;
+            });
+
+        const legendWidth = 120;
+        const legendHeight = features.length * 20;
+
+        // Add legend entry
+        svg.append("rect")
+            .attr("x", width - marginRight - legendWidth)
+            .attr("y", index * 20 + 20)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", feature_colors[feature]);
+
+        svg.append("text")
+            .attr("x", width - marginRight - legendWidth + 20)
+            .attr("y", index * 20 + 9 + 20)
+            .text(feature.split('_')[0])
+            .style("font-size", "12px")
+            .style('fill', feature_colors[feature])
+            .attr("alignment-baseline", "middle");
     });
 
     // Add the x-axis.
@@ -198,7 +221,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     // Add the y-axis.
     svg.append("g")
         .attr("transform", `translate(${marginLeft},0)`)
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).tickFormat(d3.format(".0%")));
 
 
     // Append the SVG element.
