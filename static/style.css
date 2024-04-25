@@ -546,7 +546,6 @@
         gap: 18px;
     }
     
-    
     .song-artist-image-popup {
         height: 60px;
         border-radius: 100%;
@@ -560,11 +559,11 @@
         display:none;
         height:240px;
     }
+
     
     .song-artist-column-popup {
         display: flex;
         flex-direction: column;
-        /* gap: 12px; */
     }
     
     .song-name-popup {

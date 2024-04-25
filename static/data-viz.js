@@ -43,8 +43,8 @@ function run_viz() {
               var imageHeight = $imageContainer.height();
               var windowHeight = $(window).height();
               console.log(scrollTop)
+              
               if (scrollTop < 5550 && scrollTop > 4500) {
-                console.log("hi")
                 var popup = $('.popup');
                 popup.show()
               }
