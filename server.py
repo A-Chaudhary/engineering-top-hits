@@ -31,7 +31,7 @@ def create():
             return np.sqrt(np.sum((x1 - x2) ** 2))
 
         # function to find closest songs
-        def find_closest_songs(user_input, dataset, num_songs=5):
+        def find_closest_songs(user_input, dataset, num_songs=6):
             distances = dataset.apply(lambda row: euclidean_distance(user_input, row), axis=1)
             closest_songs = distances.sort_values().head(num_songs)
             return closest_songs.index.tolist()
@@ -86,7 +86,22 @@ def create():
             'images': images
         }
 
-        return jsonify(data)
+        # sorting in increasing popularity
+
+        combined_data = zip(data['song_names'], data['popularities'], data['artists'], data['audios'], data['images'])
+        sorted_data = sorted(combined_data, key=lambda x: x[1])
+        sorted_song_names, sorted_popularities, sorted_artists, sorted_audios, sorted_images = zip(*sorted_data)
+
+        sorted_dict = {
+            'song_names': list(sorted_song_names),
+            'popularities': list(sorted_popularities),
+            'artists': list(sorted_artists),
+            'audios': list(sorted_audios),
+            'images': list(sorted_images)
+        }
+
+
+        return jsonify(sorted_dict)
     
     return 0
 
