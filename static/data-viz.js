@@ -144,7 +144,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
         .attr("height", height);
 
     // Loop through each feature and draw a line for it
-    features.forEach(feature => {
+    features.forEach((feature, index) => {
         const line = d3.line()
             .x(d => x(d.date))
             .y(d => y(d[feature]));
@@ -187,7 +187,26 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
                 svg.selectAll("path")
                     .style("opacity", 1);
                 svg.selectAll(".std-line").remove();
-            }) ;
+            });
+
+        const legendWidth = 120;
+        const legendHeight = features.length * 20;
+
+        // Add legend entry
+        svg.append("rect")
+            .attr("x", width - marginRight - legendWidth)
+            .attr("y", index * 20 + 20)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", feature_colors[feature]);
+
+        svg.append("text")
+            .attr("x", width - marginRight - legendWidth + 20)
+            .attr("y", index * 20 + 9 + 20)
+            .text(feature.split('_')[0])
+            .style("font-size", "12px")
+            .style('fill', feature_colors[feature])
+            .attr("alignment-baseline", "middle");
     });
 
     // Add the x-axis.
