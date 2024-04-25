@@ -198,7 +198,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     // Add the y-axis.
     svg.append("g")
         .attr("transform", `translate(${marginLeft},0)`)
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).tickFormat(d3.format(".0%")));
 
 
     // Append the SVG element.
