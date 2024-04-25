@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import pandas as pd
 import numpy as np
 
@@ -27,7 +27,6 @@ def index():
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        # function to calculate Euclidean distance
         def euclidean_distance(x1, x2):
             return np.sqrt(np.sum((x1 - x2) ** 2))
 
@@ -47,19 +46,19 @@ def create():
             "Energy": int(request.form['energy'])/100
         })
 
-        if request.form["decade"] == "df_60s":
+        if request.form["decade"] == "1960s":
             df = df_60s
-        elif request.form["decade"] == "df_70s":
+        elif request.form["decade"] == "1970s":
             df = df_70s
-        elif request.form["decade"] == "df_80s":
+        elif request.form["decade"] == "1980s":
             df = df_80s
-        elif request.form["decade"] == "df_90s":
+        elif request.form["decade"] == "1990s":
             df = df_90s
-        elif request.form["decade"] == "df_00s":
+        elif request.form["decade"] == "2000s":
             df = df_00s
-        elif request.form["decade"] == "df_10s":
+        elif request.form["decade"] == "2010s":
             df = df_10s
-        elif request.form["decade"] == "df_20s":
+        elif request.form["decade"] == "2020s":
             df = df_20s
 
         closest_song_indices = find_closest_songs(user_input, df)
@@ -70,16 +69,26 @@ def create():
         images = []
         for idx in closest_song_indices:
             song_names.append(df.loc[idx, "Track Name"])
-            popularities.append(df.loc[idx, 'Popularity'])
+            popularities.append(int(df.loc[idx, 'Popularity']))
             artists.append(df.loc[idx, "Artist Name(s)"])
-            audios.append(df.loc[idx, 'Track Preview URL'])
-            images.append(df.loc[idx, 'Album Image URL'])
+            audios.append(df.loc[idx, "Track Preview URL"])
+            images.append(df.loc[idx, "Album Image URL"])
 
-        data = zip(popularities, song_names, artists, audios, images)
+        for idx, audio_url in enumerate(audios):
+            if pd.isna(audio_url):
+                audios[idx] = "None" 
 
-        return render_template('index.html', data = data, df = request.form["decade"])
+        data = {
+            'song_names': song_names,
+            'popularities': popularities,
+            'artists': artists,
+            'audios': audios,
+            'images': images
+        }
+
+        return jsonify(data)
     
-    return render_template('index.html')
+    return 0
 
 if __name__ == '__main__':
     app.run(debug=True)

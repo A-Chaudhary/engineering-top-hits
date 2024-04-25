@@ -241,7 +241,7 @@
         gap: 60px;
         border-radius: 14.912px;
         background: linear-gradient(to bottom, #333333, #999999);
-        box-shadow: 0px 1.491px 17.889px 0px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 2px 18px 0px rgba(0, 0, 0, 0.25);
         padding: 30px;
     }
 
@@ -350,7 +350,6 @@
         padding: 18px 18px;
         color: black;
         background-color: #1ED760;
-        width: 140px;
         text-align: center;
         justify-content: center;
         align-items: center;
@@ -373,14 +372,14 @@
         justify-content: center;
     }
 
-    .timeline {
+    /* .timeline {
         display: none;
-    }
+    } */
 
     .line {
         background-color: white;
-        width: 1000px;
-        height: 2px;
+        width: 1200px;
+        height: 6px;
     }
 
     .dots {
@@ -389,8 +388,10 @@
         flex-direction: row;
         justify-content: space-between;
         gap: 10px;
-        position: relative;
-        bottom: 6px;
+        /* position: relative;
+        bottom: 6px; */
+        background-color: white;
+        height: 3px;
     }
 
     .dot {
@@ -427,20 +428,20 @@
         font-size: 24px;
     }
 
-    /* .list {
-        display: flex;
-        flex-direction: column;
-        gap: 60px;
-        align-items: left;
-        justify-content: left;
-    } */
-
-    .song-row {
+    .song {
         display: flex;
         flex-direction: row;
         gap: 36px;
         justify-content: left;
         align-items: center;
+    }
+
+    #songList {
+        width: 1200px;
+        display: flex;
+        flex-direction: row;
+        gap: 120px;
+        flex-wrap: wrap;
     }
 
     .popularity {
