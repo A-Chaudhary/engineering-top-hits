@@ -100,6 +100,16 @@ def create():
             'images': list(sorted_images)
         }
 
+        top_100 = closest_song_indices = find_closest_songs(user_input, df, 100)
+        print(top_100)
+        popularities_100 = []
+        for idx in top_100:
+            popularities_100.append(int(df.loc[idx, 'Popularity']))
+
+        print(popularities_100)
+
+        sorted_dict['popularities_100'] = popularities_100
+        print(sorted_dict)
 
         return jsonify(sorted_dict)
     

@@ -128,6 +128,58 @@ $(document).ready(function() {
                 $('#songList').append(songElement);
             });
 
+            // bell curve 
+
+            function mean(array) {
+                return array.reduce((a, b) => a + b, 0) / array.length;
+              }
+          
+            function standardDeviation(array) {
+            const avg = mean(array);
+            const squaredDiffs = array.map(value => Math.pow(value - avg, 2));
+            const avgSquaredDiff = mean(squaredDiffs);
+            return Math.sqrt(avgSquaredDiff);
+            }
+        
+            function generateDataPoints(mu, sigma, numPoints) {
+            let dataPoints = [];
+            for (let x = -3 * sigma; x <= 3 * sigma; x += (6 * sigma) / numPoints) {
+                let y = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+                dataPoints.push({x: x + mu, y: y}); // shift x by mu
+            }
+            return dataPoints;
+            }
+
+            var dataValues = response.popularities_100
+
+            const mu = mean(dataValues);
+            const sigma = standardDeviation(dataValues);
+
+            var ctx = document.getElementById('bellCurveChart').getContext('2d');
+            var bellCurveChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                label: '100 similar songs',
+                borderColor: '#1ED760',
+                data: generateDataPoints(mu, sigma, 100), // generate bell curve based on mean and standard deviation
+                fill: false
+                }]
+            },
+            options: {
+                scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left'
+                }
+                }
+            }
+            });
+
 
             },
             error: function(xhr, status, error) {
