@@ -9,7 +9,7 @@ function run_viz() {
             data[d_idx].date = new Date(`${data[d_idx].Year}-${data[d_idx].Month}-1`);
         }
 
-        var STARTING_DATE = new Date('1960-01-01');
+        var STARTING_DATE = new Date(BEGIN_DATE);
         var ENDING_DATE = new Date(STARTING_DATE);
         ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
     
@@ -51,6 +51,15 @@ function run_viz() {
                   top: 0, // Reset initial position if needed
                   bottom: 'auto'
                 });
+
+                if (scrollTop + windowHeight>= parentTop) {
+                    console.log('hit');
+                    STARTING_DATE = scrollXDate(Math.min(scrollTop, parentBottom - imageHeight))
+                    ENDING_DATE = new Date(STARTING_DATE);
+                    ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
+                    // console.log(STARTING_DATE, ENDING_DATE);
+                    draw_viz(data, STARTING_DATE, ENDING_DATE);
+                }
               }
               // Check if parent div is in the view
               else if (scrollTop >= parentTop && scrollTop <= (parentBottom - imageHeight)) {
@@ -147,7 +156,15 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
             .attr("stroke-width", 4)
             .attr("d", line)
             .on('mouseover', (event, data) =>{
+                // console.log('mouseenter', feature);
                 // console.log(feature, data);
+
+                // Fade out other lines
+                svg.selectAll("path")
+                    .style("opacity", 0.3);
+
+                // Highlight the current line
+                path.style("opacity", 1);
 
                 svg.append("path")
                     .datum(data)
@@ -165,6 +182,10 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
                     )
             })
             .on('mouseout', (e, d)=>{
+                // Restore opacity of all lines
+                // console.log('mouseout', feature);
+                svg.selectAll("path")
+                    .style("opacity", 1);
                 svg.selectAll(".std-line").remove();
             }) ;
     });
