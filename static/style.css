@@ -84,6 +84,7 @@
     border-radius: 12px;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .audio-card.hide{
@@ -213,14 +214,14 @@
 /* Rachel's css */
 @font-face {
     font-family: 'Circular'; 
-    src: url('../static/CircularSpotifyTxT-Book.ttf') format('truetype'); 
+    src: url('../static/font/CircularSpotifyText-Book.otf') format('opentype'); 
     font-weight: normal;
     font-style: normal;
     }
 
     @font-face {
     font-family: 'Circular'; 
-    src: url('../static/CircularSpotifyTxT-Medium.ttf') format('truetype'); 
+    src: url('../static/font/CircularSpotifyText-Medium.otf') format('opentype'); 
     font-weight: bold;
     font-style: normal;
     }
@@ -347,7 +348,7 @@
     }
 
     input[type="range"] {
-        transform: rotate(90deg);
+        transform: rotate(270deg);
         -webkit-appearance: none;
         appearance: none;
         width: 200px; 
