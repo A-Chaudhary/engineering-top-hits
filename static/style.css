@@ -3,7 +3,7 @@
 *{
     background-color: #282828;
     color: white;
-    font-family: "Circular Spotify Text";
+    font-family: "Circular Spotify Text", "Circular", sans-serif;
 }
 
 .section{
@@ -214,14 +214,14 @@
 /* Rachel's css */
 @font-face {
     font-family: 'Circular'; 
-    src: url('../static/font/CircularSpotifyText-Book.otf') format('opentype'); 
+    src: url('../static/font/CircularSpotifyText-Book.otf'); 
     font-weight: normal;
     font-style: normal;
     }
 
     @font-face {
     font-family: 'Circular'; 
-    src: url('../static/font/CircularSpotifyText-Medium.otf') format('opentype'); 
+    src: url('../static/font/CircularSpotifyText-Medium.otf'); 
     font-weight: bold;
     font-style: normal;
     }
