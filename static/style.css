@@ -34,6 +34,7 @@
 
 .top-song{
     margin-bottom: 5%;
+    opacity: 50%;
 }
 
 .wave{
@@ -330,7 +331,7 @@
     .number {
         display: flex;
         color: #1ED760;
-        font-family: sans-serif;
+        font-family: "Circular", sans-serif;
         background: linear-gradient(180deg, #000 0%, #393939 100%), black;
         align-items: center;
         justify-content: center;
@@ -393,33 +394,14 @@
         justify-content: center;
     }
 
-    /* .timeline {
-        display: none;
-    } */
-
-    .line {
-        background-color: white;
-        width: 1200px;
-        height: 6px;
-    }
-
     .dots {
         z-index: 1000;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         gap: 10px;
-        /* position: relative;
-        bottom: 6px; */
         background-color: white;
         height: 3px;
-    }
-
-    .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 100%;
-        background-color: white;
     }
 
     .dot-wrap {
@@ -554,6 +536,17 @@
     
     .song-artist-image-popup {
         height: 60px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .song-artist-popup {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .song-artist-image-popup img {
         border-radius: 100%;
     }
     
