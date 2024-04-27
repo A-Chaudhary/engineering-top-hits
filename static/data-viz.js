@@ -259,12 +259,27 @@ const data = {
 
 const options = {
   scale: {
-  angleLines: {
-    display: true
-    },
+    r: {
+    angleLines: {
+        display: true,
+        },
+    }
   },
   maintainAspectRatio: false,
 };
+
+// options = {
+//     scales: {
+//         r: {
+//             angleLines: {
+//                 display: false
+//             },
+//             suggestedMin: 50,
+//             suggestedMax: 100
+//         }
+//     }
+// };
+
 
   const ctx = document.getElementById('radarChart').getContext('2d');
   const radarChart = new Chart(ctx, {

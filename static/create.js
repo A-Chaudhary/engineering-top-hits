@@ -2,8 +2,6 @@ window.addEventListener('load', restoreScrollPosition);
 
 $(document).ready(function() {
     $('#dots').on('click', '.dot-wrap', function() {
-        event.preventDefault();
-
         $('.dot-wrap').removeClass('active');
         $(this).addClass('active');
 
@@ -35,7 +33,7 @@ $(document).ready(function() {
                     if (formData.decade === decades[i]) {
                         dotHTML += ' active'; // Add 'active' class if current decade matches formData.decade
                     }
-                    dotHTML += '"><div class="dot"></div>' + decades[i] + '</div>';
+                    dotHTML += '">' + decades[i] + '</div>';
                     $('#dots').append(dotHTML);
                 }
 
@@ -75,6 +73,8 @@ $(document).ready(function() {
     $('#button').click(function(event) {
         event.preventDefault();
 
+        document.getElementById("timeline").style.display = "block;"
+
         var formData = {
             instrumentalness: $('#instrumentalnessValue').text(),
             speechiness: $('#speechinessValue').text(),
@@ -90,10 +90,10 @@ $(document).ready(function() {
             url: '/create', 
             data: formData,
             success: function(response) {
-                console.log(response)
                 $('#songList').empty();
-
                 $('#dots').empty();
+
+                document.getElementById("timeline").style.display = "block;"
 
                 var decades = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
                 for (var i = 0; i < decades.length; i++) {
@@ -128,58 +128,7 @@ $(document).ready(function() {
                 $('#songList').append(songElement);
             });
 
-            // bell curve 
-
-            function mean(array) {
-                return array.reduce((a, b) => a + b, 0) / array.length;
-              }
-          
-            function standardDeviation(array) {
-            const avg = mean(array);
-            const squaredDiffs = array.map(value => Math.pow(value - avg, 2));
-            const avgSquaredDiff = mean(squaredDiffs);
-            return Math.sqrt(avgSquaredDiff);
-            }
-        
-            function generateDataPoints(mu, sigma, numPoints) {
-            let dataPoints = [];
-            for (let x = -3 * sigma; x <= 3 * sigma; x += (6 * sigma) / numPoints) {
-                let y = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
-                dataPoints.push({x: x + mu, y: y}); // shift x by mu
-            }
-            return dataPoints;
-            }
-
-            var dataValues = response.popularities_100
-
-            const mu = mean(dataValues);
-            const sigma = standardDeviation(dataValues);
-
-            var ctx = document.getElementById('bellCurveChart').getContext('2d');
-            var bellCurveChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                label: '100 similar songs',
-                borderColor: '#1ED760',
-                data: generateDataPoints(mu, sigma, 100), // generate bell curve based on mean and standard deviation
-                fill: false
-                }]
-            },
-            options: {
-                scales: {
-                x: {
-                    type: 'linear',
-                    position: 'bottom'
-                },
-                y: {
-                    type: 'linear',
-                    position: 'left'
-                }
-                }
-            }
-            });
-
+            // insert some chart here illustrating spread
 
             },
             error: function(xhr, status, error) {
