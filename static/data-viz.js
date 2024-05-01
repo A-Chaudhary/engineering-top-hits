@@ -150,7 +150,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
   $("#data-viz").empty();
 
   data = data.filter((d) => d.date >= STARTING_DATE && d.date <= ENDING_DATE);
-  // console.log(data);
 
   const features = [
     "Acousticness_mean",
@@ -217,8 +216,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
       .attr("stroke-width", 4)
       .attr("d", line)
       .on("mouseover", (event, data) => {
-        // console.log('mouseenter', feature);
-        // console.log(feature, data);
 
         svg.selectAll(".std-line").remove();
 
@@ -267,7 +264,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
       })
       .on("mouseout", (e, d) => {
         // Restore opacity of all lines
-        // console.log('mouseout', feature);
         svg.selectAll("path")
           .transition() // Apply transition for fade-out effect
           .duration(250) // Duration of the transition
@@ -387,8 +383,8 @@ const options = {
 const ctx = document.getElementById("radarChart").getContext("2d");
 const radarChart = new Chart(ctx, {
   type: "radar",
-  data,
-  options
+  data: data,
+  options: options
 });
 
 run_viz();
