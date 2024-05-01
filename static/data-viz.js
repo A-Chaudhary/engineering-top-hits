@@ -150,7 +150,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
   $("#data-viz").empty();
 
   data = data.filter((d) => d.date >= STARTING_DATE && d.date <= ENDING_DATE);
-  // console.log(data);
 
   const features = [
     "Acousticness_mean",
@@ -217,8 +216,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
       .attr("stroke-width", 4)
       .attr("d", line)
       .on("mouseover", (event, data) => {
-        // console.log('mouseenter', feature);
-        // console.log(feature, data);
 
         svg.selectAll(".std-line").remove();
 
@@ -267,7 +264,6 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
       })
       .on("mouseout", (e, d) => {
         // Restore opacity of all lines
-        // console.log('mouseout', feature);
         svg.selectAll("path")
           .transition() // Apply transition for fade-out effect
           .duration(250) // Duration of the transition
@@ -317,6 +313,8 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
   $("#data-viz").append(svg.node());
 }
 
+Chart.defaults.font.size = 12;
+
 const data = {
   labels: [
     "Danceability",
@@ -328,27 +326,56 @@ const data = {
   ],
   datasets: [
     {
-      label: "Track values",
+      label: "Track",
       data: [0.708, 0.955, 0.0489, 0.111, 0.532, 0.952],
       borderWidth: 2,
       borderColor: "#1ED760",
-      backgroundColor: "rgba(30,215,96,0.1)",
+      backgroundColor: "rgba(30,215,96,0.25)",
     },
     {
-      label: "Month average values",
+      label: "Monthly Average",
       data: [0.55776, 0.41608, 0.092808, 0.63792, 0.001467, 0.345436],
       borderWidth: 2,
       borderColor: "#FFC564",
-      backgroundColor: "rgba(255,197,100,0.1)",
+      backgroundColor: "rgba(255,197,100,0.25)",
     },
   ],
 };
 
 const options = {
-  scale: {
-    angleLines: {
-      display: true,
-    },
+  plugins: {
+    legend: {
+      labels: {
+        boxWidth: 12,
+        generateLabels: (chart) => {
+          return chart.data.datasets.map(
+            (dataset, index) => ({
+              text: dataset.label,
+              fillStyle: dataset.backgroundColor,
+              strokeStyle: dataset.borderColor,
+              fontColor: 'white'
+            })
+          )
+        }
+      }
+    }
+  },
+  scales: {
+    r: {
+      angleLines: {
+        color: 'rgba(255,255,255,0.75)',
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.75)'
+      },
+      pointLabels: {
+        color: 'rgba(255,255,255,0.75)'
+      },
+      ticks: {
+        color: 'rgba(255,255,255,0.75)',
+        backdropColor: 'rgba(0,0,0,0)'
+      }
+    }
   },
   maintainAspectRatio: false,
 };
@@ -357,7 +384,7 @@ const ctx = document.getElementById("radarChart").getContext("2d");
 const radarChart = new Chart(ctx, {
   type: "radar",
   data: data,
-  options: options,
+  options: options
 });
 
 run_viz();
