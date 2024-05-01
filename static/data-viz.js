@@ -67,6 +67,13 @@ function run_viz() {
         var imageHeight = $imageContainer.height();
         var windowHeight = $(window).height();
 
+        let progressScale = d3
+            .scaleTime()
+            .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2025-04-06")])
+          .range([0, 100]);
+        
+        $(".timeline").width(`${progressScale(scrollTop)}%`);
+
         // Popup Logic
         if (
           scrollTop >= DateEnterScroll("1974-01-01") &&
@@ -115,10 +122,8 @@ function run_viz() {
           scrollTop >= parentTop &&
           scrollTop <= parentBottom - imageHeight
         ) {
-          // console.log('inside', parentTop, scrollTop,parentBottom,  parentBottom - imageHeight, imageHeight);
           // Pin the image container
           $("#music-lines").addClass("exploration-section");
-
           $imageContainer.css({
             position: "fixed",
             top: "200px",
