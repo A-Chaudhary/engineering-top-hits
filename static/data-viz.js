@@ -67,6 +67,27 @@ function run_viz() {
         var imageHeight = $imageContainer.height();
         var windowHeight = $(window).height();
 
+        // Timeline Logic
+        let progressScale = d3
+            .scaleTime()
+            .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2025-04-06")])
+          .range([0, 100]);
+        
+        let decadeScale = d3.scaleLinear()
+          .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2025-04-06")])
+          .range([1958, 2022]);
+        
+        const p = d3.precisionFixed(1);
+        
+        $(".timeline").width(`${progressScale(scrollTop)}%`);
+        $(".year-text").html(`${d3.format("." + p + "f")(decadeScale(scrollTop))}`);
+        if ($(".year-text").html() >= "2022") {
+          $(".year-label").css("left", `98.5%`);
+          $(".year-text").html("2022")
+        } else {
+          $(".year-label").css("left", `${progressScale(scrollTop) - 2}%`);
+        }
+
         // Popup Logic
         if (
           scrollTop >= DateEnterScroll("1974-01-01") &&
@@ -115,13 +136,11 @@ function run_viz() {
           scrollTop >= parentTop &&
           scrollTop <= parentBottom - imageHeight
         ) {
-          // console.log('inside', parentTop, scrollTop,parentBottom,  parentBottom - imageHeight, imageHeight);
           // Pin the image container
           $("#music-lines").addClass("exploration-section");
-
           $imageContainer.css({
             position: "fixed",
-            top: "200px",
+            top: "250px",
             bottom: "auto",
           });
 
@@ -180,7 +199,7 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
 
   // const width = 840;
   const width = parseInt($(window).width() * 0.48);
-  const height = 500;
+  const height = 450;
   const marginTop = 20;
   const marginRight = 20;
   const marginBottom = 30;
