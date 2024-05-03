@@ -89,27 +89,70 @@ function run_viz() {
         }
 
         // Popup Logic
-        if (
-          scrollTop >= DateEnterScroll("1974-01-01") &&
-          scrollTop <= DateEnterScroll("1984-01-01")
-        ) {
-          var popup = $(".popup");
-          popup.show();
-        } else if (
-          scrollTop >= DateEnterScroll("1994-01-01") &&
-          scrollTop <= DateEnterScroll("2004-01-01")
-        ) {
-          var popup = $(".popup");
-          popup.show();
-        } else {
-          var popup = document.querySelector(".popup");
-          popup.style.display = "none";
-        }
+        // if (
+        //   scrollTop >= DateEnterScroll("1974-01-01") &&
+        //   scrollTop <= DateEnterScroll("1984-01-01")
+        // ) {
+        //   var popup = $(".popup");
+        //   popup.show();
+        // } else if (
+        //   scrollTop >= DateEnterScroll("1994-01-01") &&
+        //   scrollTop <= DateEnterScroll("2004-01-01")
+        // ) {
+        //   var popup = $(".popup");
+        //   popup.show();
+        // } else {
+        //   var popup = document.querySelector(".popup");
+        //   popup.style.display = "none";
+        // }
+
+        function fetchPopupCSV(callback) {
+          const csvFilePath = '../static/popups.csv'; // Change this to your desired filepath
+          const xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      const csvData = parseCSV(xhr.responseText);
+                      callback(csvData);
+                  } else {
+                      console.error('Failed to fetch popup CSV file');
+                  }
+              }
+          };
+          xhr.open('GET', csvFilePath, true);
+          xhr.send();
+      }
+      
+      fetchPopupCSV(function(csvData) {
+          window.addEventListener('scroll', function() {
+              const scrollTop = window.scrollY;
+              
+              csvData.forEach(row => {
+                  const enterDate = new Date(row.Enter);
+                  const exitDate = new Date(row.Exit);
+                  
+                  if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
+                      var popup = document.getElementById("popup");
+                      popup.style.display = 'flex';
+                      document.getElementById('popup-text').innerText = row['Blurb'];
+                      document.getElementById('song-name-popup').innerText = row['Track'];
+                      document.getElementById('artist-name-popup').innerText = row['Artist'];
+                      document.getElementById('popup-image').src = row['Album Image (URI)'];
+                      radarChart.data.datasets[0].data = [row["Danceability (Track)"], row['Energy (Track)'], row['Speechiness (Track)'], row['Acousticness (Track)'], row['Instrumentalness (Track)'], row['Liveness (Track)']];
+                      radarChart.data.datasets[1].data = [row["Danceability (Track)"], row['Energy (Month Average)'], row['Speechiness (Month Average)'], row['Acousticness (Month Average)'], row['Instrumentalness (Month Average)'], row['Liveness (Month Average)']];
+                  } else {
+                      var popup = document.querySelector(".popup");
+                      // popup.style.display = "none";
+                      console.log('hide')
+                  }
+              });
+          });
+      });
+      
       
         function parseCSV(csvString) {
           const rows = csvString.trim().split('\n');
           const data = [];
-          // Parse headers
           const headers = rows[0].split(',').map(header => header.trim());
           for (let i = 1; i < rows.length; i++) {
               const values = [];
