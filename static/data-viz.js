@@ -105,6 +105,72 @@ function run_viz() {
           var popup = document.querySelector(".popup");
           popup.style.display = "none";
         }
+      
+        function parseCSV(csvString) {
+          const rows = csvString.trim().split('\n');
+          const data = [];
+          // Parse headers
+          const headers = rows[0].split(',').map(header => header.trim());
+          for (let i = 1; i < rows.length; i++) {
+              const values = [];
+              let currentFieldValue = '';
+              let insideQuotes = false;
+              for (let j = 0; j < rows[i].length; j++) {
+                  const char = rows[i][j];
+                  if (char === ',' && !insideQuotes) {
+                      values.push(currentFieldValue.trim());
+                      currentFieldValue = '';
+                  } else if (char === '"') {
+                      insideQuotes = !insideQuotes;
+                  } else {
+                      currentFieldValue += char;
+                  }
+              }
+              values.push(currentFieldValue.trim());
+              const entry = {};
+              headers.forEach((header, index) => {
+                  entry[header] = values[index];
+              });
+              data.push(entry);
+          }
+          return data;
+      }
+      
+      
+      function fetchCSV(callback) {
+          const csvFilePath = '../static/decade-blurbs.csv';
+          const xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      const csvData = parseCSV(xhr.responseText);
+                      callback(csvData);
+                  } else {
+                      console.error('Failed to fetch CSV file');
+                  }
+              }
+          };
+          xhr.open('GET', csvFilePath, true);
+          xhr.send();
+      }
+
+      fetchCSV(function(csvData) {
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY;
+            
+            csvData.forEach(row => {
+                const enterDate = new Date(row.Enter);
+                const exitDate = new Date(row.Exit);
+                
+                if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
+                    document.getElementById('main-question').innerText = row['main-question'];
+                    document.getElementById('decade-description').innerText = row['decade-description'];
+                    document.getElementById('audio-embed').src = row['audio-embed'].toString();
+                }
+            });
+        });
+      });
+
 
         if (scrollTop <= parentTop) {
           // console.log('above',parentTop, scrollTop, parentBottom);
