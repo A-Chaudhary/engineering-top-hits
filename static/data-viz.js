@@ -1,5 +1,8 @@
-const BEGIN_DATE = new Date("1960-01-01");
+const BEGIN_DATE = new Date("1957-01-01");
 const END_DATE = new Date("2015-12-31");
+
+let STARTING_DATE = null;
+let ENDING_DATE = null;
 
 function run_viz() {
   d3.csv("../static/average+stv_month.csv").then(function (master_data) {
@@ -8,8 +11,8 @@ function run_viz() {
       data[d_idx].date = new Date(`${data[d_idx].Year}-${data[d_idx].Month}-1`);
     }
 
-    var STARTING_DATE = new Date(BEGIN_DATE);
-    var ENDING_DATE = new Date(STARTING_DATE);
+    STARTING_DATE = new Date(BEGIN_DATE);
+    ENDING_DATE = new Date(STARTING_DATE);
     ENDING_DATE.setFullYear(STARTING_DATE.getFullYear() + 10);
 
     // Extract the features you want to visualize
@@ -110,11 +113,25 @@ function run_viz() {
               const scrollTop = window.scrollY;
               let isInRange = false;
               
-              csvData.forEach(row => {
+              csvData.forEach((row, i) => {
                   const enterDate = new Date(row.Enter);
                   const exitDate = new Date(row.Exit);
+
+                  const svg = d3.select('#svg');
+
+                  // Remove existing rectangles with class 'testing-rect'
+                  svg.selectAll(`.testing_rect_${i}`).remove();
+                  svg.insert("rect", ":first-child")// Insert as the first child
+                  .attr('class', `testing_rect_${i}`)
+                  .attr("x", x(enterDate)) // Use x scale to position the rectangle
+                  .attr("y", y(1))
+                  .attr("width", x(exitDate) - x(enterDate)) // Calculate width based on exit and enter dates
+                  .attr("height", y(0) - marginTop) // Cover the entire height of the SVG
+                  .attr("fill", "rgb(25, 25, 25)")
+                  .attr("pointer-events", "none"); // Disable pointer events on the rectangle
+
                   
-                  if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
+                  if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime()) && !isInRange) {
                       isInRange = true;
                       var popup = document.getElementById("popup");
                       popup.style.display = 'flex';
@@ -124,6 +141,8 @@ function run_viz() {
                       document.getElementById('popup-image').src = row['Album Image (URI)'];
                       radarChart.data.datasets[0].data = [row["Danceability (Track)"], row['Energy (Track)'], row['Speechiness (Track)'], row['Acousticness (Track)'], row['Instrumentalness (Track)'], row['Liveness (Track)']];
                       radarChart.data.datasets[1].data = [row["Danceability (Track)"], row['Energy (Month Average)'], row['Speechiness (Month Average)'], row['Acousticness (Month Average)'], row['Instrumentalness (Month Average)'], row['Liveness (Month Average)']];
+
+                      svg.selectAll(`.testing_rect_${i}`).attr("fill", "rgba(200, 200, 200, 0.2)")
                   }
               });
               if (!isInRange) {
@@ -190,10 +209,12 @@ function run_viz() {
                 const exitDate = new Date(row.Exit);
                 
                 if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
+                  if (document.getElementById('main-question').innerText != row['main-question']) {
                     document.getElementById('main-question').innerText = row['main-question'];
                     document.getElementById('decade-description').innerText = row['decade-description'];
                     document.getElementById('top-song').innerText = row['decade'];
                     document.getElementById('audio-embed').src = row['audio-embed'].toString();
+                  }
                 }
             });
         });
@@ -259,6 +280,25 @@ function run_viz() {
   });
 }
 
+// const width = 840;
+const width = parseInt($(window).width() * 0.48);
+const height = 450;
+const marginTop = 20;
+const marginRight = 20;
+const marginBottom = 30;
+const marginLeft = 40;
+
+var x = d3
+.scaleUtc()
+.domain([STARTING_DATE, ENDING_DATE])
+.range([marginLeft, width - marginRight]);
+
+// Declare the y (vertical position) scale.
+var y = d3
+.scaleLinear()
+.domain([0, 1])
+.range([height - marginBottom, marginTop]);
+
 function draw_viz(data, STARTING_DATE, ENDING_DATE) {
   $("#data-viz").empty();
 
@@ -291,28 +331,15 @@ function draw_viz(data, STARTING_DATE, ENDING_DATE) {
     Liveness_std: "#6E4E73",
   };
 
-  // const width = 840;
-  const width = parseInt($(window).width() * 0.48);
-  const height = 450;
-  const marginTop = 20;
-  const marginRight = 20;
-  const marginBottom = 30;
-  const marginLeft = 40;
-
   // Declare the x (horizontal position) scale.
-  const x = d3
-    .scaleUtc()
-    .domain([STARTING_DATE, ENDING_DATE])
-    .range([marginLeft, width - marginRight]);
-
-  // Declare the y (vertical position) scale.
-  const y = d3
-    .scaleLinear()
-    .domain([0, 1])
-    .range([height - marginBottom, marginTop]);
+  x = d3
+  .scaleUtc()
+  .domain([STARTING_DATE, ENDING_DATE])
+  .range([marginLeft, width - marginRight]);
+  
 
   // Create the SVG container.
-  const svg = d3.create("svg").attr("width", width).attr("height", height);
+  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("id", "svg");
 
   // Loop through each feature and draw a line for it
   features.forEach((feature, index) => {
