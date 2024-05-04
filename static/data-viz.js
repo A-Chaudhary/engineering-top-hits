@@ -210,6 +210,7 @@ function run_viz() {
                 if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
                     document.getElementById('main-question').innerText = row['main-question'];
                     document.getElementById('decade-description').innerText = row['decade-description'];
+                    document.getElementById('top-song').innerText = row['decade'];
                     document.getElementById('audio-embed').src = row['audio-embed'].toString();
                 }
             });
