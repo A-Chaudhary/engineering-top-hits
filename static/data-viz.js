@@ -126,12 +126,14 @@ function run_viz() {
       fetchPopupCSV(function(csvData) {
           window.addEventListener('scroll', function() {
               const scrollTop = window.scrollY;
+              let isInRange = false;
               
               csvData.forEach(row => {
                   const enterDate = new Date(row.Enter);
                   const exitDate = new Date(row.Exit);
                   
                   if (scrollTop >=  DateEnterScroll(enterDate.getTime()) && scrollTop <= DateEnterScroll(exitDate.getTime())) {
+                      isInRange = true;
                       var popup = document.getElementById("popup");
                       popup.style.display = 'flex';
                       document.getElementById('popup-text').innerText = row['Blurb'];
@@ -140,12 +142,12 @@ function run_viz() {
                       document.getElementById('popup-image').src = row['Album Image (URI)'];
                       radarChart.data.datasets[0].data = [row["Danceability (Track)"], row['Energy (Track)'], row['Speechiness (Track)'], row['Acousticness (Track)'], row['Instrumentalness (Track)'], row['Liveness (Track)']];
                       radarChart.data.datasets[1].data = [row["Danceability (Track)"], row['Energy (Month Average)'], row['Speechiness (Month Average)'], row['Acousticness (Month Average)'], row['Instrumentalness (Month Average)'], row['Liveness (Month Average)']];
-                  } else {
-                      var popup = document.querySelector(".popup");
-                      // popup.style.display = "none";
-                      console.log('hide')
                   }
               });
+              if (!isInRange) {
+                var popup = document.getElementById("popup");
+                popup.style.display = 'none';
+            }
           });
       });
       
