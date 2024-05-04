@@ -88,24 +88,6 @@ function run_viz() {
           $(".year-label").css("left", `${progressScale(scrollTop) - 2}%`);
         }
 
-        // Popup Logic
-        // if (
-        //   scrollTop >= DateEnterScroll("1974-01-01") &&
-        //   scrollTop <= DateEnterScroll("1984-01-01")
-        // ) {
-        //   var popup = $(".popup");
-        //   popup.show();
-        // } else if (
-        //   scrollTop >= DateEnterScroll("1994-01-01") &&
-        //   scrollTop <= DateEnterScroll("2004-01-01")
-        // ) {
-        //   var popup = $(".popup");
-        //   popup.show();
-        // } else {
-        //   var popup = document.querySelector(".popup");
-        //   popup.style.display = "none";
-        // }
-
         function fetchPopupCSV(callback) {
           const csvFilePath = '../static/popups.csv'; // Change this to your desired filepath
           const xhr = new XMLHttpRequest();

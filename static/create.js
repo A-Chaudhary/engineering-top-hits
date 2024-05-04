@@ -61,7 +61,6 @@ $(document).ready(function() {
                 $('#songList').append(songElement);
             });
 
-
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -129,6 +128,15 @@ $(document).ready(function() {
             });
 
             // insert some chart here illustrating spread
+            Plotly.plot('box-plot',[{
+                y:[response.popularities_100],
+                boxpoints: 'all',
+                type: 'box',
+                marker: {
+                    color: '#1ED760'
+                  },
+            }]);
+
 
             },
             error: function(xhr, status, error) {
@@ -150,30 +158,6 @@ function togglePlayPause(index) {
         playPauseImg.src = "../static/Play.png";
     }
 }
-
-// code for timeline
-const dotWraps = document.querySelectorAll('.dot-wrap');
-
-dotWraps.forEach(dotWrap => {
-  dotWrap.addEventListener('click', function() {
-    dotWraps.forEach(element => {
-      element.classList.remove('active');
-    });
-    
-    this.classList.add('active');
-    const decadeId = this.id;
-    document.getElementById("instrumentalnessInput").value = document.getElementById("instrumentalnessValue").textContent;
-    document.getElementById("speechinessInput").value = document.getElementById("speechinessValue").textContent;
-    document.getElementById("acousticnessInput").value = document.getElementById("acousticnessValue").textContent;
-    document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
-    document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
-    document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
-    document.getElementById('decadeInput').value = decadeId;
-    storeScrollPosition();
-    document.getElementById('form').submit();
-  });
-});
-
 
 // code for circles
 const energy = {
@@ -292,26 +276,10 @@ danceability.addEventListener("input", function() {
     this.style.setProperty("--value", this.value);
 }); 
 
-// updates hidden input values
-function updateHiddenInputs() {
-    document.getElementById("instrumentalnessInput").value = document.getElementById("instrumentalnessValue").textContent;
-    document.getElementById("speechinessInput").value = document.getElementById("speechinessValue").textContent;
-    document.getElementById("acousticnessInput").value = document.getElementById("acousticnessValue").textContent;
-    document.getElementById("livenessInput").value = document.getElementById("livenessValue").textContent;
-    document.getElementById("danceabilityInput").value = document.getElementById("danceabilityValue").textContent;
-    document.getElementById("energyInput").value = document.getElementById("energyValue").textContent;
-    document.getElementById('decadeInput').value = "df_60s"; // default
-}
-
-document.getElementById("button").addEventListener("click", function() {
-    updateHiddenInputs();
-});
-
 function storeScrollPosition() {
     sessionStorage.setItem('scrollPosition', window.scrollY);
 }
 
-// Function to restore the scroll position
 function restoreScrollPosition() {
     const scrollPosition = sessionStorage.getItem('scrollPosition');
     if (scrollPosition) {
