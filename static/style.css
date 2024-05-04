@@ -474,6 +474,7 @@
         flex-direction: row;
         gap: 120px;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
     .popularity {
