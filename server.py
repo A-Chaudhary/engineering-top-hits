@@ -32,6 +32,7 @@ def create():
 
         # function to find closest songs
         def find_closest_songs(user_input, dataset, num_songs=6):
+            dataset = dataset[dataset['Popularity'] > 0]
             distances = dataset.apply(lambda row: euclidean_distance(user_input, row), axis=1)
             closest_songs = distances.sort_values().head(num_songs)
             return closest_songs.index.tolist()
