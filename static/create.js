@@ -127,16 +127,6 @@ $(document).ready(function() {
                 $('#songList').append(songElement);
             });
 
-            // insert some chart here illustrating spread
-            Plotly.plot('box-plot',[{
-                y:[response.popularities_100],
-                boxpoints: 'all',
-                type: 'box',
-                marker: {
-                    color: '#1ED760'
-                  },
-            }]);
-
 
             },
             error: function(xhr, status, error) {
