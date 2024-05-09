@@ -1,7 +1,7 @@
 window.addEventListener('load', restoreScrollPosition);
 
 $(document).ready(function() {
-    $('#dots').on('click', '.dot-wrap', function() {
+    $('#dots').on('click', '.dot-wrap', function () {
         $('.dot-wrap').removeClass('active');
         $(this).addClass('active');
 
@@ -14,6 +14,8 @@ $(document).ready(function() {
             energy: $('#energyValue').text(),
             decade: $(this).text()
         };
+        $('#loading-image').show();
+        $('#songList').empty();
 
         $.ajax({
             type: 'POST',
@@ -59,8 +61,9 @@ $(document).ready(function() {
                 
                 songElement.append('</div>'); 
                 $('#songList').append(songElement);
-            });
+                });
 
+                $('#loading-image').hide();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -71,8 +74,10 @@ $(document).ready(function() {
 
     $('#button').click(function(event) {
         event.preventDefault();
-
         document.getElementById("timeline").style.display = "block;"
+        $('html, body').animate({
+            scrollTop: $(".create-timeline").offset().top
+        }, 50);
 
         var formData = {
             instrumentalness: $('#instrumentalnessValue').text(),
@@ -83,16 +88,17 @@ $(document).ready(function() {
             energy: $('#energyValue').text(),
             decade: '1960s'
         };
+        $('#loading-image').show();
+        $('#songList').empty();
+        $('#dots').empty();
 
         $.ajax({
             type: 'POST',
             url: '/create', 
             data: formData,
             success: function(response) {
-                $('#songList').empty();
-                $('#dots').empty();
-
                 document.getElementById("timeline").style.display = "block;"
+                $('#dots').empty();
 
                 var decades = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
                 for (var i = 0; i < decades.length; i++) {
@@ -127,7 +133,7 @@ $(document).ready(function() {
                 $('#songList').append(songElement);
             });
 
-
+                $('#loading-image').hide();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
