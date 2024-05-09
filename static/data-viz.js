@@ -73,11 +73,11 @@ function run_viz() {
         // Timeline Logic
         let progressScale = d3
             .scaleTime()
-            .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2025-04-06")])
+            .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2022-04-06")])
           .range([0, 100]);
         
         let decadeScale = d3.scaleLinear()
-          .domain([DateEnterScroll("1962-08-04"), DateEnterScroll("2025-04-06")])
+          .domain([DateEnterScroll("1958-08-04"), DateEnterScroll("2022-04-06")])
           .range([1958, 2022]);
         
         const p = d3.precisionFixed(1);
