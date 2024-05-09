@@ -3,6 +3,7 @@ $(document).ready(function () {
     $(".popup").hide()
     $("#audio-info").hide()
     $("#go-back").hide()
+    $('#loading-image').hide();
 
     loadData()
 });
